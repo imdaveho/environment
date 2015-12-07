@@ -1,0 +1,9 @@
+.cache
+elpa
+auto-save-list
+eshell
+el-get
+custom.el
+*.elc
+.cask
+themes/*

@@ -1,0 +1,13 @@
+(source melpa)
+
+(depends-on "cask")
+(depends-on "dash")
+(depends-on "elpy")
+(depends-on "epl")
+(depends-on "evil")
+(depends-on "f")
+(depends-on "package-build")
+(depends-on "pallet")
+(depends-on "s")
+(depends-on "shut-up")
+(depends-on "smart-mode-line")
