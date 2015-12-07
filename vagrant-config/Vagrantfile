@@ -33,7 +33,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, privileged: false,
     inline: "git clone https://github.com/OiNutter/node-build.git ~/.nodenv/plugins/node-build"
   config.vm.provision :shell, privileged: false,
-    inline: "git clone hittps://github.com/yyuu/pyenv.git ~/.pyenv"
+    inline: "git clone https://github.com/yyuu/pyenv.git ~/.pyenv"
   config.vm.provision :shell, privileged: false,
     inline: "git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv"
 
