@@ -65,9 +65,7 @@
 
 ;; Set themes
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'zenburn t)
+(load-theme 'noctilux t)
 
-;; Powerline/Smart-Mode-Line
-(powerline-default-theme)
 
 (provide 'init-ui)

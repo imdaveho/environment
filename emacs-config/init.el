@@ -4,13 +4,14 @@
 (require 'pallet)
 (pallet-mode t)
 
-;; Theme Common Lisp Settings
+;; Theme Common Lisp Settings (eg. from sml/setup)
+
 
 ;;
 
 ;; User Info
-(setq user-full-name "D...o"
-      user-mail-address "imd...o@gmail.com")
+(setq user-full-name "Dave Ho"
+      user-mail-address "imdaveho@gmail.com")
 
 ;; Load Configs
 (let ((debug-on-error t)
@@ -57,25 +58,6 @@
 (setq auto-save-default nil)
 
 ;; Setting packages
-;;;(require 'package)
-;;;(let package-archives '(("melpa" . "http://melpha.org/packages")
-;;;			("org" . "http://orgmode.org/elpa")
-;;;			("marmalade" . "http://marmalade-repo.org/packages/")
-;;;			("gnu" . "http://elpa.gnu.org/packages/")
-;;;			("elpy" . "http://jorgenschaefer.github.io/packages")))
-;;;(setq package-enable-at-startup nil)
-;;;(package initialize)
-
-;;(require 'init-util (concat config-directory "init-util.el"))
-
-;;(setq custom-file (concat user-emacs-directory "custom.el"))
-;;(when (file-exists-p custom-file)
-;;  (load custom-file))
-
 (cl-loop for file in (directory-files config-directory t)
          when (string-match "\\.el$" file)
          do (require (intern (file-name-base file)) file)))
-
-;; TEMP ELPY
-;; (when (require 'elpy nil t)
-;;   (elpy-enable))
