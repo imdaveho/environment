@@ -67,8 +67,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'zenburn t)
 
-;; Smart Mode Line
-(setq sml/theme 'dark)
-(sml/setup)
+;; Powerline/Smart-Mode-Line
+(powerline-default-theme)
 
 (provide 'init-ui)

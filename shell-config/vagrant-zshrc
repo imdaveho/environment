@@ -25,7 +25,8 @@ export PYENV_ROOT="${HOME}/.pyenv"
 if [ -d "${PYENV_ROOT}" ];then
     export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+    # standardizing path for all package managers to single directory (i.e. ~/local-pkgs)
+    # eval "$(pyenv virtualenv-init -)"
 fi
 # RBENV
 export RBENV_ROOT="${HOME}/.rbenv"
@@ -40,7 +41,8 @@ if [ -d "${NODENV_ROOT}" ];then
     eval "$(nodenv init -)"
 fi
 
-
+#EMACS: CASK
+export PATH="${HOME}/.cask/bin:${PATH}"
 
 
 

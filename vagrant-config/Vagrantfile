@@ -6,7 +6,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "forwarded_port", guest: 3333, host: 3333
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
-    vb.name = "scrapyard"
+    vb.name = "skunkwerks"
   end
   ############################################################
   # Oh My ZSH + Dependencies Install section
@@ -21,7 +21,8 @@ Vagrant.configure(2) do |config|
     inline: "git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh"
 
   config.vm.provision :shell, privileged: false,
-    inline: "curl -o ~/.oh-my-zsh/custom/babun.zsh-theme https://raw.githubusercontent.com/babun/babun/master/babun-core/plugins/oh-my-zsh/src/babun.zsh-theme"
+    inline: "curl -o ~/.oh-my-zsh/custom/babun.zsh-theme https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-babun.zsh-theme"
+    # inline: "curl -o ~/.oh-my-zsh/custom/babun.zsh-theme https://raw.githubusercontent.com/babun/babun/master/babun-core/plugins/oh-my-zsh/src/babun.zsh-theme"
 
   # Clone *env from their respective repos
   config.vm.provision :shell, privileged: false,
