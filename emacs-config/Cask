@@ -2,6 +2,7 @@
 (source melpa)
 
 (depends-on "cask")
+(depends-on "company-tern")
 (depends-on "dash")
 (depends-on "elpy")
 (depends-on "emmet-mode")
@@ -19,4 +20,6 @@
 (depends-on "robe")
 (depends-on "s")
 (depends-on "shut-up")
+(depends-on "tern")
+(depends-on "tide")
 (depends-on "web-mode")
