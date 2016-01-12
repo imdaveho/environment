@@ -54,7 +54,7 @@
   :group 'dotemacs)
 
 ;; Stop littering everywhere with save files, put them somewhere
-(setq backup-directory-alist '(("." . "~/.emacs-backups")))
+(setq backup-directory-alist '(("." . "~/.backup-emacs")))
 (setq auto-save-default nil)
 
 ;; Setting packages
