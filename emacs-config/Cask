@@ -10,6 +10,7 @@
 (depends-on "epl")
 (depends-on "evil")
 (depends-on "f")
+(depends-on "magit")
 (depends-on "origami")
 (depends-on "package-build")
 (depends-on "pallet")
