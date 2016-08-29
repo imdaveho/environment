@@ -51,18 +51,18 @@ if [ -n "$args" ]; then
     for var in $args
     do
         if [ "$var" = "python" -o "$args" = *"all"* ]; then
-            git clone https://github.com/yyuu/pyenv.git ~/.pyenv
+            git clone https://github.com/yyuu/pyenv.git /home/vagrant/.pyenv
 	    source /home/vagrant/.zshrc
 	    pyenv install 3.5.2
 	    pyenv install 2.7.12
         elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
-            git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
-            git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+            git clone https://github.com/sstephenson/rbenv.git /home/vagrant/.rbenv
+            git clone https://github.com/sstephenson/ruby-build.git /home/vagrant/.rbenv/plugins/ruby-build
             source /home/vagrant/.zshrc
 	    rbenv install 2.3.1
         elif [ "$var" = "node" -o "$args" = *"all"* ]; then
-            git clone https://github.com/OiNutter/nodenv.git ~/.nodenv
-            git clone https://github.com/OiNutter/node-build.git ~/.nodenv/plugins/node-build
+            git clone https://github.com/OiNutter/nodenv.git /home/vagrant/.nodenv
+            git clone https://github.com/OiNutter/node-build.git /home/vagrant/.nodenv/plugins/node-build
 	    source /home/vagrant/.zshrc
 	    nodenv install 6.4.0
 	elif [ "$var" = "mysql" -o "$args" = *"all"* ]; then
