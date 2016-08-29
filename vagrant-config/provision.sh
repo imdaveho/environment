@@ -6,14 +6,14 @@ mkdir /vagrant/development
 mkdir /vagrant/tmp
 ln -s /vagrant/development /home/vagrant/development
 
-# Clone Environment
-git clone https://github.com/imdaveho/environment.git /vagrant/tmp
-ln -s /vagrant/tmp/environment/emacs-config/.spacemacs /home/vagrant/.spacemacs
-
 # Install Common Packages
 sudo apt-get -y autoremove
 sudo apt-get update
-sudo apt-get -y install vim git zsh build-essential make curl emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf
+sudo apt-get -y install autoload vim git zsh build-essential make curl emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf
+
+# Clone Environment
+git clone https://github.com/imdaveho/environment.git /vagrant/tmp
+ln -s /vagrant/tmp/environment/emacs-config/.spacemacs /home/vagrant/.spacemacs
 
 # Oh My Zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git /home/vagrant/.oh-my-zsh
@@ -44,6 +44,8 @@ libcurl4-openssl-dev libffi-dev
 
 sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev
+
+export HOME=/home/vagrant
 
 # Configure programming languages
 args="$*"
