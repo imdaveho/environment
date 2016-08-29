@@ -41,10 +41,17 @@ if [ -d "${NODENV_ROOT}" ];then
     eval "$(nodenv init -)"
 fi
 
-#EMACS: CASK
-export PATH="${HOME}/.cask/bin:${PATH}"
+# PHPENV
+export PHPENV_ROOT="${HOME}/.phpenv"
+if [ -d "${PHPENV_ROOT}" ];then
+    export PATH="${PHPENV_ROOT}/bin:${PATH}"
+    eval "$(phpenv init -)"
+fi
 
+# EMACS: CASK
+# export PATH="${HOME}/.cask/bin:${PATH}"
 
+export MYSQLDB_PASSWORD=""
 
 ##### Template Settings #####
 
