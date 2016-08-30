@@ -26,9 +26,6 @@ ln -s /vagrant/tmp/environment/shell-config/vagrant-babun.zsh-theme $HOME/.oh-my
 # Oh My Zsh Config
 # curl -o ~/.zshrc https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-zshrc
 ln -s /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
-# Duplicate .zshrc -> .zshenv for use with GUI Emacs
-cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
-sudo chsh -s $(which zsh) vagrant
 
 # Emacs (Spacemacs)
 git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
@@ -52,7 +49,7 @@ PYZSH="
 # PYENV
 export PYENV_ROOT=\"\${HOME}/.pyenv\"
 if [ -d \"\${PYENV_ROOT}\" ];then
-	export PATH=\"\${PYENV_ROOT}/bin:${PATH}\"
+    export PATH=\"\${PYENV_ROOT}/bin:\${PATH}\"
     eval \"\$(pyenv init -)\"
     # standardizing path for all package managers to single directory (i.e. ~/local-pkgs)
     # eval \"\$(pyenv virtualenv-init -)\"
@@ -94,7 +91,7 @@ LUAZSH="
 # LUAENV
 export LUAENV_ROOT=\"\${HOME}/.luaenv\"
 if [ -d \"\${LUAENV_ROOT} ];then
-    export PATH=\"\${LUAENV_ROOT}/bin:${PATH}\"
+    export PATH=\"\${LUAENV_ROOT}/bin:\${PATH}\"
     eval \"\$(luaenv init -)\"
 fi
 "
@@ -111,27 +108,29 @@ if [ -n "$args" ]; then
         
     	elif [ "$var" = "python" -o "$args" = *"all"* ]; then
             git clone https://github.com/yyuu/pyenv.git $HOME/.pyenv
-	    export PATH=$HOME/.pyenv/bin:$PATH
 	    echo "${PYZSH}" >> $HOME/.zshrc
-	    # pyenv install 3.5.2
-	    # pyenv install 2.7.12
+	    export PATH=$HOME/.pyenv/bin:$PATH
+	    pyenv install 3.5.2
+	    pyenv install 2.7.12
         
     	elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
             git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
             git clone https://github.com/sstephenson/ruby-build.git $HOME/.rbenv/plugins/ruby-build
-            export PATH=$HOME/.rbenv/bin:$PATH
 	    echo "${RBZSH}" >> $HOME/.zshrc
+            export PATH=$HOME/.rbenv/bin:$PATH
 	    rbenv install 2.3.1
         
     	elif [ "$var" = "node" -o "$args" = *"all"* ]; then
             git clone https://github.com/OiNutter/nodenv.git $HOME/.nodenv
             git clone https://github.com/OiNutter/node-build.git $HOME/.nodenv/plugins/node-build
+	    echo "${JSZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.nodenv/bin:$PATH
 	    nodenv install 6.4.0
 	# the below require more use to see if it works as intended
     	elif [ "$var" = "php" -o "$args" = *"all"* ]; then
 	    git clone https://github.com/madumlao/phpenv.git $HOME/.phpenv
 	    git clone https://github.com/php-build/php-build.git $HOME/.phpenv/plugins/php-build
+	    echo "${PHPZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.phpenv/bin:$PATH
 	    phpenv install 7.0.9
 	    # phpenv install 5.3.10
@@ -140,6 +139,7 @@ if [ -n "$args" ]; then
 	    # issue with the master is that install --list doesn't work
 	    # to get list of versions, check: github/golang/go/releases
 	    git clone https://github.com/wfarr/goenv.git $HOME/.goenv
+	    echo "${GOZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.goenv/bin:$PATH
 	    goenv install 1.7
 
@@ -160,7 +160,13 @@ if [ -n "$args" ]; then
     	elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
 	    git clone https://github.com/cehoffman/luaenv.git $HOME/.luaenv
 	    git clone https://github.com/cehoffman/lua-build.git $HOME/.luaenv/plugins/lua-build
-	
+	    echo "${LUAZSH}" >> $HOME/.zshrc
+	    export PATH=$HOME/.luaenv/bin:$PATH
+	    luaenv install 5.3
         fi
     done
 fi
+
+# Duplicate .zshrc -> .zshenv for use with GUI Emacs
+cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
+sudo chsh -s $(which zsh) vagrant
