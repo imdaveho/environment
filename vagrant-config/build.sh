@@ -141,6 +141,7 @@ if [ -n "$args" ]; then
 	    git clone https://github.com/wfarr/goenv.git $HOME/.goenv
 	    # git clone https://github.com/l3x/goenv.git $HOME/.goenv
 	    # git clone https://github.com/syndbg/goenv.git $HOME/.goenv
+	    # bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 	    echo "${GOZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.goenv/bin:$PATH
 	    goenv install 1.7
