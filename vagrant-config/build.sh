@@ -82,7 +82,7 @@ fi
 GOZSH="
 # GOENV
 export GOENV_ROOT=\"\${HOME}/.goenv\"
-if [ -d \"\${GOENV_ROOT} ];then
+if [ -d \"\${GOENV_ROOT}\" ];then
     export PATH=\"\${GOENV_ROOT}/bin:\${PATH}\"
     eval \"\$(goenv init -)\"
 fi
@@ -90,7 +90,7 @@ fi
 LUAZSH="
 # LUAENV
 export LUAENV_ROOT=\"\${HOME}/.luaenv\"
-if [ -d \"\${LUAENV_ROOT} ];then
+if [ -d \"\${LUAENV_ROOT}\" ];then
     export PATH=\"\${LUAENV_ROOT}/bin:\${PATH}\"
     eval \"\$(luaenv init -)\"
 fi
@@ -139,6 +139,8 @@ if [ -n "$args" ]; then
 	    # issue with the master is that install --list doesn't work
 	    # to get list of versions, check: github/golang/go/releases
 	    git clone https://github.com/wfarr/goenv.git $HOME/.goenv
+	    # git clone https://github.com/l3x/goenv.git $HOME/.goenv
+	    # git clone https://github.com/syndbg/goenv.git $HOME/.goenv
 	    echo "${GOZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.goenv/bin:$PATH
 	    goenv install 1.7
