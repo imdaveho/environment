@@ -41,7 +41,7 @@ python3-dev python-software-properties
 sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
 libcurl4-openssl-dev libffi-dev
 
-sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev \
+sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev
 
 # Configure programming languages
