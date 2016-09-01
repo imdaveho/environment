@@ -143,7 +143,6 @@ if [ -n "$args" ]; then
 	    # git clone https://github.com/syndbg/goenv.git $HOME/.goenv
 	    # bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 	    git clone https://github.com/kaneshin/goenv.git $HOME/.goenv
-	    git clone https://github.com/rbenv/rbenv-vars.git $HOME/.goenv/plugins/goenv-vars
 	    cp -r /vagrant/tmp/environment/libs/goenv-vars $HOME/.goenv/plugins
 	    echo "${GOZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.goenv/bin:$PATH
