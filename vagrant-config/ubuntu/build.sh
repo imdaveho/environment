@@ -144,7 +144,7 @@ if [ -n "$args" ]; then
 	    # bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 	    git clone https://github.com/kaneshin/goenv.git $HOME/.goenv
 	    git clone https://github.com/rbenv/rbenv-vars.git $HOME/.goenv/plugins/goenv-vars
-	    cp /vagrant/tmp/environment/libs/goenv-vars $HOME/.goenv/plugins/goenv-vars/bin/
+	    cp -r /vagrant/tmp/environment/libs/goenv-vars $HOME/.goenv/plugins
 	    echo "${GOZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.goenv/bin:$PATH
 	    goenv install 1.7
