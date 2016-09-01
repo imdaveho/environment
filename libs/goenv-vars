@@ -1,0 +1,67 @@
+# Source: https://github.com/rbenv/rbenv-vars
+# Latest commit eeb83d1 on Dec 18, 2015
+
+#!/usr/bin/env bash
+#
+# Usage: rbenv vars
+#
+# Prints all rbenv-vars environment variables applicable to the
+# current working directory in the order they will be set. The output
+# format is a script that may be passed to `eval` in a Bourne-
+# compatible shell.
+#
+# For more information on rbenv-vars, see:
+# https://github.com/rbenv/rbenv-vars#readme
+
+set -e
+[ -n "$GOENV_DEBUG" ] && set -x
+
+if [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
+  echo "goenv-vars 1.2.0"
+  exit
+fi
+
+traverse-goenv-vars-files() {
+  local root="$1"
+  local results=""
+
+  while [ -n "$root" ]; do
+    if [ -e "${root}/.goenv-vars" ]; then
+      results="${root}/.goenv-vars"$'\n'"$results"
+    fi
+    root="${root%/*}"
+  done
+
+  if [ -n "$results" ]; then
+    echo -n "$results"
+  else
+    return 1
+  fi
+}
+
+find-goenv-vars-files() {
+  if [ -e "${GOENV_ROOT}/vars" ]; then
+    echo "${GOENV_ROOT}/vars"
+  fi
+
+  traverse-goenv-vars-files "$GOENV_DIR" ||
+  [ "$GOENV_DIR" = "$PWD" ] || traverse-goenv-vars-files "$PWD"
+}
+
+sanitize-vars() {
+  sed \
+    -e "/^[ "$'\t'"]*[A-Za-z_][0-9A-Za-z_]*?\{0,1\}=/ !d" \
+    -e "s/'/'\\\\''/g" \
+    -e "s/\(\\\\\\\$\)/'\\1'/g" \
+    -e "s/\\\\\\\\/\\\\/g" \
+    -e "s/\(\\\$[0-9A-Za-z_][0-9A-Za-z_]*\)/'\\1'/g" \
+    -e "s/\(\\\${[0-9A-Za-z_][0-9A-Za-z_]*}\)/'\\1'/g" \
+    -e "s/^[ "$'\t'"]*\([A-Za-z_][0-9A-Za-z_]*?\{0,1\}\)=\(.*\)$/export \\1='\\2'/" \
+    -e "s/export \([A-Za-z_][0-9A-Za-z_]*\)?=/[ -n \"\$\\1\" ] || export \\1=/g"
+}
+
+while read file; do
+  echo "# $file"
+  { cat "$file"; echo; } | sanitize-vars
+  echo
+done < <( find-goenv-vars-files )
