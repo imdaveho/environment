@@ -44,6 +44,8 @@ libcurl4-openssl-dev libffi-dev
 sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev
 
+mkdir $HOME/.virtualenvs
+
 # Configure programming languages
 PYZSH="
 # PYENV
@@ -79,14 +81,6 @@ if [ -d \"\${PHPENV_ROOT}\" ];then
     eval \"\$(phpenv init -)\"
 fi
 "
-GOZSH="
-# GOENV
-export GOENV_ROOT=\"\${HOME}/.goenv\"
-if [ -d \"\${GOENV_ROOT}\" ];then
-    export PATH=\"\${GOENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(goenv init -)\"
-fi
-"
 LUAZSH="
 # LUAENV
 export LUAENV_ROOT=\"\${HOME}/.luaenv\"
@@ -112,6 +106,7 @@ if [ -n "$args" ]; then
 	    export PATH=$HOME/.pyenv/bin:$PATH
 	    pyenv install 3.5.2
 	    pyenv install 2.7.12
+	    mkdir $HOME/.virtualenvs/venvs
         
     	elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
             git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
@@ -119,6 +114,7 @@ if [ -n "$args" ]; then
 	    echo "${RBZSH}" >> $HOME/.zshrc
             export PATH=$HOME/.rbenv/bin:$PATH
 	    rbenv install 2.3.1
+	    mkdir $HOME/.virtualenvs/gemsets
         
     	elif [ "$var" = "node" -o "$args" = *"all"* ]; then
             git clone https://github.com/OiNutter/nodenv.git $HOME/.nodenv
@@ -136,21 +132,12 @@ if [ -n "$args" ]; then
 	    # phpenv install 5.3.10
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
-	    # issue with the master is that install --list doesn't work
-	    # to get list of versions, check: github/golang/go/releases
-	    # git clone https://github.com/wfarr/goenv.git $HOME/.goenv
-	    # git clone https://github.com/l3x/goenv.git $HOME/.goenv
-	    # git clone https://github.com/syndbg/goenv.git $HOME/.goenv
-	    # bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-	    git clone https://github.com/kaneshin/goenv.git $HOME/.goenv
-	    cp -r /vagrant/tmp/environment/libs/goenv-vars $HOME/.goenv/plugins
-	    echo "${GOZSH}" >> $HOME/.zshrc
-	    export PATH=$HOME/.goenv/bin:$PATH
-	    goenv install 1.7
+	    # consider forking rbenv to make it work for go, etc
+	    bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 
 	elif [ "$var" = "java" -o "$args" = *"all"* ]; then
 	    # use jvm to manage versions with .java-version
-	    git clone https://github.com/caarlos0/jvm.git $HOME/.jvm
+	    # git clone https://github.com/caarlos0/jvm.git $HOME/.jvm
 	    # use jabba to handle the installation JDKs
 	    curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && $HOME/.jabba/jabba.sh
 	
