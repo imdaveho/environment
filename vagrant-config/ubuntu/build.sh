@@ -137,7 +137,7 @@ if [ -n "$args" ]; then
 	    zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
 	    source $HOME/.gvm/scripts/gvm
 	    gvm install go1.4.3 -B
-	    gmv use go1.4.3
+	    gvm use go1.4.3
 	    export GOROOT_BOOTSTRAP=$GOROOT
 	    gvm install go1.7
 	    gvm uninstall go1.4.3
