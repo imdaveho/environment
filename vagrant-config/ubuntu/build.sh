@@ -11,7 +11,8 @@ ln -s /vagrant/development $HOME/development
 # Install Common Packages
 sudo apt-get -y autoremove
 sudo apt-get update
-sudo apt-get -y install vim git zsh build-essential make curl unzip sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf
+sudo apt-get -y install vim git zsh build-essential make curl unzip \
+sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc
 
 # Clone Environment
 git clone https://github.com/imdaveho/environment.git /vagrant/tmp/environment
@@ -133,7 +134,13 @@ if [ -n "$args" ]; then
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
 	    # consider forking rbenv to make it work for go, etc
-	    bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+	    zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+	    source $HOME/.gvm/scripts/gvm
+	    gvm install go1.4.3 -B
+	    gmv use go1.4.3
+	    export GOROOT_BOOTSTRAP=$GOROOT
+	    gvm install go1.7
+	    gvm uninstall go1.4.3
 
 	elif [ "$var" = "java" -o "$args" = *"all"* ]; then
 	    # use jvm to manage versions with .java-version
