@@ -35,6 +35,8 @@ git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 # [py] http://askubuntu.com/questions/21547/what-are-the-packages-libraries-i-should-install-before-compiling-python-from-so
 # [rb] https://gorails.com/setup/ubuntu/16.04
 # [php] http://www.tecmint.com/install-and-compile-php-7-on-centos-7-and-debian-8/
+# [php] http://jcutrer.com/howto/linux/how-to-compile-php7-on-ubuntu-14-04
+# [php] maybe worth installing, but not necessary: libfcgi-dev 
 sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
 libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
 python3-dev python-software-properties
@@ -43,7 +45,8 @@ sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
 libcurl4-openssl-dev libffi-dev
 
 sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
-libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev
+libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
+autoconf libtidy-dev re2c
 
 mkdir $HOME/.virtualenvs
 
@@ -72,6 +75,14 @@ export NODENV_ROOT=\"\${HOME}/.nodenv\"
 if [ -d \"\${NODENV_ROOT}\" ];then
     export PATH=\"\${NODENV_ROOT}/bin:\${PATH}\"
     eval \"\$(nodenv init -)\"
+fi
+"
+JAVAZSH="
+# JENV
+export JENV_ROOT=\"\${HOME}/.jenv\"
+if [ -d \"\${JENV_ROOT}\" ];then
+    export PATH=\"\${JENV_ROOT}/bin:\${PATH}\"
+    eval \"\$(jenv init -)\"
 fi
 "
 PHPZSH="
@@ -129,7 +140,7 @@ if [ -n "$args" ]; then
 	    git clone https://github.com/php-build/php-build.git $HOME/.phpenv/plugins/php-build
 	    echo "${PHPZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.phpenv/bin:$PATH
-	    phpenv install 7.0.9
+	    phpenv install 7.0.11
 	    # phpenv install 5.3.10
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
@@ -142,13 +153,14 @@ if [ -n "$args" ]; then
 	    gvm install go1.7
 	    gvm uninstall go1.4.3
 
-	elif [ "$var" = "java" -o "$args" = *"all"* ]; then
-	    # use jvm to manage versions with .java-version
-	    # git clone https://github.com/caarlos0/jvm.git $HOME/.jvm
-	    # use jabba to handle the installation JDKs
-	    curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && $HOME/.jabba/jabba.sh
-	
-        elif [ "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
+        elif [ "$var" = "java" -o "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
+	    if [ "$var" = "java" -o "$args" = *"all"* ]; then
+	        # curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
+	        # jabba install 1.8.102
+		git clone https://github.com/gcuisinier/jenv.git ~/.jenv
+		echo "${JAVAZSH}" >> $HOME/.zshrc
+		export PATH=$HOME/.jenv/bin:$PATH
+	    fi
 	    curl -s "https://get.sdkman.io" | bash
 	    source $HOME/.sdkman/bin/sdkman-init.sh
     
