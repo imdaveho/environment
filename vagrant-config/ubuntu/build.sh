@@ -155,8 +155,8 @@ if [ -n "$args" ]; then
 
         elif [ "$var" = "java" -o "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
 	    if [ "$var" = "java" -o "$args" = *"all"* ]; then
-	        # curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
-	        # jabba install 1.8.102
+	        curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
+	        jabba install 1.8.102
 		git clone https://github.com/gcuisinier/jenv.git ~/.jenv
 		echo "${JAVAZSH}" >> $HOME/.zshrc
 		export PATH=$HOME/.jenv/bin:$PATH
