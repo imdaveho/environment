@@ -1,4 +1,5 @@
 export HOME=/home/vagrant
+VBOX_NAME="vagrant"
 
 # Update Locale
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -20,10 +21,31 @@ ln -s /vagrant/tmp/environment/emacs-config/.spacemacs $HOME/.spacemacs
 
 # Oh My Zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
+
 # Oh My Zsh Theme
 # curl -o ~/.oh-my-zsh/custom/babun.zsh-theme \
 # https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-babun.zsh-theme
-ln -s /vagrant/tmp/environment/shell-config/vagrant-babun.zsh-theme $HOME/.oh-my-zsh/custom/babun.zsh-theme
+# ln -s /vagrant/tmp/environment/shell-config/vagrant-babun.zsh-theme $HOME/.oh-my-zsh/custom/babun.zsh-theme
+THEME_SETTINGS="
+local return_code=\"%(?..%{\$fg[red]%}%? %{\$reset_color%})\"
+
+PROMPT='%{\$fg[blue]%}{ %{\$fg[magenta]%}${VBOX_NAME}%{\$fg[yellow]%}::%{\$fg[blue]%}%c } \\
+%{\$fg[green]%}\$(  git rev-parse --abbrev-ref HEAD 2> /dev/null || echo \"\"  )%{$reset_color%}\\
+%{\$fg[red]%}%(!.#.»)%{\$reset_color%} '
+
+PROMPT2='%{\$fg[red]%}\ %{\$reset_color%}'
+
+RPS1='%{\$fg[blue]%}%~%{\$reset_color%} \${return_code} '
+
+ZSH_THEME_GIT_PROMPT_PREFIX=\"%{\$reset_color%}:: %{\$fg[yellow]%}(\"
+ZSH_THEME_GIT_PROMPT_SUFFIX=\")%{\$reset_color%} \"
+ZSH_THEME_GIT_PROMPT_CLEAN=\"\"
+ZSH_THEME_GIT_PROMPT_DIRTY=\"%{\$fg[red]%}*%{\$fg[yellow]%}\"
+"
+
+touch $HOME/.oh-my-zsh/custom/babun.zsh-theme
+echo "{$THEME_SETTINGS}" >> $HOME/.oh-my-zsh/custom/babun.zsh-theme
+
 # Oh My Zsh Config
 # curl -o ~/.zshrc https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-zshrc
 ln -s /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
@@ -174,7 +196,10 @@ if [ -n "$args" ]; then
 	    echo "${LUAZSH}" >> $HOME/.zshrc
 	    export PATH=$HOME/.luaenv/bin:$PATH
 	    luaenv install 5.3
-        fi
+
+	elif [ "$var" = "wine" ]; then
+	    sudo apt-get -y install wine
+	fi
     done
 fi
 
