@@ -18,6 +18,7 @@ sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc
 
 # Install for startx to work on Ubuntu/Xenial64
 sudo apt-get -y install xserver-xorg-legacy
+sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
 
 # Clone Environment
 git clone https://github.com/imdaveho/environment.git /vagrant/tmp/environment
