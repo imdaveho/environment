@@ -1,15 +1,5 @@
-export HOME=/home/vagrant
+export HOME=/home/ubuntu
 VBOX_NAME="vagrant"
-
-# bento/ubuntu-16.04 specific
-rm -rf $HOME/Desktop
-rm -rf $HOME/Downloads
-rm -rf $HOME/Documents
-rm -rf $HOME/Videos
-rm -rf $HOME/Music
-rm -rf $HOME/Pictures
-rm -rf $HOME/Templates
-
 
 # Update Locale
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -18,6 +8,7 @@ sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 mkdir /vagrant/development
 mkdir /vagrant/tmp
 ln -s /vagrant/development $HOME/development
+ln -s /vagrant/tmp $HOME/tmp
 
 # Install Common Packages
 sudo apt-get -y autoremove
@@ -58,7 +49,8 @@ echo "{$THEME_SETTINGS}" >> $HOME/.oh-my-zsh/custom/babun.zsh-theme
 
 # Oh My Zsh Config
 # curl -o ~/.zshrc https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-zshrc
-ln -s /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
+# ln -s /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
+cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
 
 # Emacs (Spacemacs)
 git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
@@ -185,17 +177,6 @@ if [ -n "$args" ]; then
 	    gvm install go1.7
 	    gvm uninstall go1.4.3
 
-        elif [ "$var" = "java" -o "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
-	    if [ "$var" = "java" -o "$args" = *"all"* ]; then
-	        curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
-	        jabba install 1.8.102
-		git clone https://github.com/gcuisinier/jenv.git ~/.jenv
-		echo "${JAVAZSH}" >> $HOME/.zshrc
-		export PATH=$HOME/.jenv/bin:$PATH
-	    fi
-	    curl -s "https://get.sdkman.io" | bash
-	    source $HOME/.sdkman/bin/sdkman-init.sh
-    
     	elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
 	    # official rust version manager
 	    curl https://sh.rustup.rs -sSf | sh
@@ -207,6 +188,19 @@ if [ -n "$args" ]; then
 	    export PATH=$HOME/.luaenv/bin:$PATH
 	    luaenv install 5.3
 
+        elif [ "$var" = "java" -o "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
+	    if [ "$var" = "java" -o "$args" = *"all"* ]; then
+	        curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
+	        jabba install 1.8.102
+		echo "jabba use 1.8.102" >> $HOME/.zshrc
+		
+		git clone https://github.com/gcuisinier/jenv.git ~/.jenv
+		echo "${JAVAZSH}" >> $HOME/.zshrc
+		export PATH=$HOME/.jenv/bin:$PATH
+	    fi
+	    curl -s "https://get.sdkman.io" | bash
+	    source $HOME/.sdkman/bin/sdkman-init.sh
+    
 	elif [ "$var" = "wine" ]; then
 	    sudo apt-get -y install wine
 	fi
@@ -215,4 +209,4 @@ fi
 
 # Duplicate .zshrc -> .zshenv for use with GUI Emacs
 cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
-sudo chsh -s $(which zsh) vagrant
+sudo chsh -s $(which zsh) ubuntu
