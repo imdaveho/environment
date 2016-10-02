@@ -16,6 +16,9 @@ sudo apt-get update
 sudo apt-get -y install vim git zsh build-essential make curl unzip \
 sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc
 
+# Install for startx to work on Ubuntu/Xenial64
+sudo apt-get -y install xserver-xorg-legacy
+
 # Clone Environment
 git clone https://github.com/imdaveho/environment.git /vagrant/tmp/environment
 ln -s /vagrant/tmp/environment/emacs-config/.spacemacs $HOME/.spacemacs
