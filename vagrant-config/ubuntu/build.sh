@@ -1,6 +1,16 @@
 export HOME=/home/vagrant
 VBOX_NAME="vagrant"
 
+# bento/ubuntu-16.04 specific
+rm -rf $HOME/Desktop
+rm -rf $HOME/Downloads
+rm -rf $HOME/Documents
+rm -rf $HOME/Videos
+rm -rf $HOME/Music
+rm -rf $HOME/Pictures
+rm -rf $HOME/Templates
+
+
 # Update Locale
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
