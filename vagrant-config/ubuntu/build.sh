@@ -35,7 +35,7 @@ THEME_SETTINGS="
 local return_code=\"%(?..%{\$fg[red]%}%? %{\$reset_color%})\"
 
 PROMPT='%{\$fg[blue]%}{ %{\$fg[magenta]%}${VBOX_NAME}%{\$fg[yellow]%}::%{\$fg[blue]%}%c } \\
-%{\$fg[green]%}\$(  git rev-parse --abbrev-ref HEAD 2> /dev/null || echo \"\"  )%{$reset_color%}\\
+%{\$fg[green]%}\$(  git rev-parse --abbrev-ref HEAD 2> /dev/null || echo \"\"  )%{\$reset_color%}\\
 %{\$fg[red]%}%(!.#.»)%{\$reset_color%} '
 
 PROMPT2='%{\$fg[red]%}\ %{\$reset_color%}'
@@ -204,9 +204,6 @@ if [ -n "$args" ]; then
 	    fi
 	    curl -s "https://get.sdkman.io" | bash
 	    source $HOME/.sdkman/bin/sdkman-init.sh
-    
-	elif [ "$var" = "wine" ]; then
-	    sudo apt-get -y install wine
 	fi
     done
 fi
