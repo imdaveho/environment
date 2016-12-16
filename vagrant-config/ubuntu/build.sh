@@ -93,8 +93,8 @@ fi
 "
 DIRENV="
 #DIRENV
-if ! type \"direnv\" > /dev/null;then
-    eval \$(direnv hook zsh)
+if direnv_loc=\"\$(type -p \"direnv\")\" || [ -z \"\${direnv_loc}\" ];then
+    eval \"\$(direnv hook zsh)\"
 fi
 "
 echo "${ASDF}" >> $HOME/.zshrc
