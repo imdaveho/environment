@@ -135,7 +135,7 @@ if [ -n "$args" ]; then
     for var in $args
     do
 	if [ "$var" = "mysql" -o "$args" = *"all"* ]; then
-	    sudo apt-get -y install libmysqlclient-dev
+	    sudo apt-get -y install libmysqlclient-dev mysql-client
 
 	elif [ "$var" = "postgresql" -o "$args" = *"all"* ]; then
 	    sudo apt-get -y install postgresql postgresql-contrib libpq-dev postgresql-server-dev-all
