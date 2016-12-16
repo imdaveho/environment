@@ -74,7 +74,7 @@ libcurl4-openssl-dev libffi-dev
 
 sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
-autoconf libtidy-dev re2c
+autoconf autoload libtidy-dev re2c
 
 sudo apt-get -y install zip direnv libgtk2.0 libnss3
 
