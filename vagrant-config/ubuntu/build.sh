@@ -76,7 +76,8 @@ sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
 autoconf autoload libtidy-dev re2c
 
-sudo apt-get -y install zip direnv libgtk2.0 libnss3
+sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
+libxslt-dev libncurses-dev
 
 mkdir $HOME/.virtualenvs
 
@@ -92,13 +93,19 @@ fi
 "
 DIRENV="
 #DIRENV
-if [[ -e `which direnv`]];then
+if ! type \"direnv\" > /dev/null;then
     eval \$(direnv hook zsh)
 fi
 "
 echo "${ASDF}" >> $HOME/.zshrc
 echo "${DIRENV}" >> $HOME/.zshrc
-. $HOME/.zhsrc
+
+# Manually do the above since bash is running
+
+if [ -d "${HOME}/.asdf" ];then
+    . ${HOME}/.asdf/asdf.sh
+    . ${HOME}/.asdf/completions/asdf.bash
+fi
 
 args="$*"
 if [ -n "$args" ]; then
@@ -133,7 +140,7 @@ if [ -n "$args" ]; then
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
 	    asdf plugin-add golang https://github.com/kennyp/asdf-golang
-		asdf install golang 1.8
+		asdf install golang 1.7.4
 
 	elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
 	    # official rust version manager
