@@ -86,18 +86,19 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.2.0
 ASDF="
 # ASDF-VM
 if [ -d \"\${HOME}/.asdf\" ];then
-	. \${HOME}/.asdf/asdf.sh
-	. \${HOME}/.asdf/completions/asdf.bash
+    . \${HOME}/.asdf/asdf.sh
+    . \${HOME}/.asdf/completions/asdf.bash
 fi
 "
 DIRENV="
 #DIRENV
 if [[ -e `which direnv`]];then
-	eval \$(direnv hook zsh)
+    eval \$(direnv hook zsh)
 fi
 "
-echo ${ASDF} >> $HOME/.zshrc
-echo ${DIRENV} >> $HOME/.zshrc
+echo "${ASDF}" >> $HOME/.zshrc
+echo "${DIRENV}" >> $HOME/.zshrc
+. $HOME/.zhsrc
 
 args="$*"
 if [ -n "$args" ]; then
