@@ -1,4 +1,4 @@
-export HOME=/home/ubuntu
+export HOME=/home/vagrant
 VBOX_NAME="vagrant"
 
 # Update Locale
@@ -76,59 +76,28 @@ sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
 autoconf libtidy-dev re2c
 
+sudo apt-get -y install zip direnv libgtk2.0 libnss3
+
 mkdir $HOME/.virtualenvs
 
 # Configure programming languages
-PYZSH="
-# PYENV
-export PYENV_ROOT=\"\${HOME}/.pyenv\"
-if [ -d \"\${PYENV_ROOT}\" ];then
-    export PATH=\"\${PYENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(pyenv init -)\"
-    # standardizing path for all package managers to single directory (i.e. ~/local-pkgs)
-    # eval \"\$(pyenv virtualenv-init -)\"
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.2.0
+
+ASDF="
+# ASDF-VM
+if [ -d \"\${HOME}/.asdf\" ];then
+	. \${HOME}/.asdf/asdf.sh
+	. \${HOME}/.asdf/completions/asdf.bash
 fi
 "
-RBZSH="
-# RBENV
-export RBENV_ROOT=\"\${HOME}/.rbenv\"
-if [ -d \"\${RBENV_ROOT}\" ];then
-    export PATH=\"\${RBENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(rbenv init -)\"
+DIRENV="
+#DIRENV
+if [[ -e `which direnv`]];then
+	eval \$(direnv hook zsh)
 fi
 "
-JSZSH="
-# NODENV
-export NODENV_ROOT=\"\${HOME}/.nodenv\"
-if [ -d \"\${NODENV_ROOT}\" ];then
-    export PATH=\"\${NODENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(nodenv init -)\"
-fi
-"
-JAVAZSH="
-# JENV
-export JENV_ROOT=\"\${HOME}/.jenv\"
-if [ -d \"\${JENV_ROOT}\" ];then
-    export PATH=\"\${JENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(jenv init -)\"
-fi
-"
-PHPZSH="
-# PHPENV
-export PHPENV_ROOT=\"\${HOME}/.phpenv\"
-if [ -d \"\${PHPENV_ROOT}\" ];then
-    export PATH=\"\${PHPENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(phpenv init -)\"
-fi
-"
-LUAZSH="
-# LUAENV
-export LUAENV_ROOT=\"\${HOME}/.luaenv\"
-if [ -d \"\${LUAENV_ROOT}\" ];then
-    export PATH=\"\${LUAENV_ROOT}/bin:\${PATH}\"
-    eval \"\$(luaenv init -)\"
-fi
-"
+echo ${ASDF} >> $HOME/.zshrc
+echo ${DIRENV} >> $HOME/.zshrc
 
 args="$*"
 if [ -n "$args" ]; then
@@ -140,68 +109,44 @@ if [ -n "$args" ]; then
 	elif [ "$var" = "postgresql" -o "$args" = *"all"* ]; then
 	    sudo apt-get -y install postgresql postgresql-contrib libpq-dev postgresql-server-dev-all
         
-    	elif [ "$var" = "python" -o "$args" = *"all"* ]; then
-            git clone https://github.com/yyuu/pyenv.git $HOME/.pyenv
-	    echo "${PYZSH}" >> $HOME/.zshrc
-	    export PATH=$HOME/.pyenv/bin:$PATH
-	    pyenv install 3.5.2
-	    pyenv install 2.7.12
+	elif [ "$var" = "python" -o "$args" = *"all"* ]; then
+        asdf plugin-add python https://github.com/tuvistavie/asdf-python
+		asdf install python 2.7.12
+		asdf install python 3.5.2
 	    mkdir $HOME/.virtualenvs/venvs
         
-    	elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
-            git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
-            git clone https://github.com/sstephenson/ruby-build.git $HOME/.rbenv/plugins/ruby-build
-	    echo "${RBZSH}" >> $HOME/.zshrc
-            export PATH=$HOME/.rbenv/bin:$PATH
-	    rbenv install 2.3.1
+	elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
+        asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby
+		asdf install ruby 2.3.3
 	    mkdir $HOME/.virtualenvs/gemsets
         
-    	elif [ "$var" = "node" -o "$args" = *"all"* ]; then
-            git clone https://github.com/OiNutter/nodenv.git $HOME/.nodenv
-            git clone https://github.com/OiNutter/node-build.git $HOME/.nodenv/plugins/node-build
-	    echo "${JSZSH}" >> $HOME/.zshrc
-	    export PATH=$HOME/.nodenv/bin:$PATH
-	    nodenv install 6.4.0
+	elif [ "$var" = "node" -o "$args" = *"all"* ]; then
+        asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs
+		asdf install nodejs 7.2.1
+
 	# the below require more use to see if it works as intended
-    	elif [ "$var" = "php" -o "$args" = *"all"* ]; then
-	    git clone https://github.com/madumlao/phpenv.git $HOME/.phpenv
-	    git clone https://github.com/php-build/php-build.git $HOME/.phpenv/plugins/php-build
-	    echo "${PHPZSH}" >> $HOME/.zshrc
-	    export PATH=$HOME/.phpenv/bin:$PATH
-	    phpenv install 7.0.11
-	    # phpenv install 5.3.10
+	elif [ "$var" = "php" -o "$args" = *"all"* ]; then
+	    asdf plugin-add php https://github.com/odarriba/asdf-php
+	    # asdf install php 7.0.11
+	    # asdf install php 5.3.10
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
-	    # consider forking rbenv to make it work for go, etc
-	    zsh < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-	    source $HOME/.gvm/scripts/gvm
-	    gvm install go1.4.3 -B
-	    gvm use go1.4.3
-	    export GOROOT_BOOTSTRAP=$GOROOT
-	    gvm install go1.7
-	    gvm uninstall go1.4.3
+	    asdf plugin-add golang https://github.com/kennyp/asdf-golang
+		asdf install golang 1.8
 
-    	elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
+	elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
 	    # official rust version manager
 	    curl https://sh.rustup.rs -sSf | sh
 	
-    	elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
-	    git clone https://github.com/cehoffman/luaenv.git $HOME/.luaenv
-	    git clone https://github.com/cehoffman/lua-build.git $HOME/.luaenv/plugins/lua-build
-	    echo "${LUAZSH}" >> $HOME/.zshrc
-	    export PATH=$HOME/.luaenv/bin:$PATH
-	    luaenv install 5.3
+	elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
+	   asdf plugin-add lua https://github.com/Stratus3D/asdf-lua
+	   asdf install lua 5.3.3
 
-        elif [ "$var" = "java" -o "$var" = "groovy" -o "$var" = "scala" -o "$args" = *"all"* ]; then
-	    if [ "$var" = "java" -o "$args" = *"all"* ]; then
-	        curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . $HOME/.jabba/jabba.sh
-	        jabba install 1.8.102
-		echo "jabba use 1.8.102" >> $HOME/.zshrc
-		
-		git clone https://github.com/gcuisinier/jenv.git ~/.jenv
-		echo "${JAVAZSH}" >> $HOME/.zshrc
-		export PATH=$HOME/.jenv/bin:$PATH
-	    fi
+	elif [ "$var" = "java" -o 
+		   "$var" = "groovy" -o 
+		   "$var" = "scala" -o 
+		   "$var" = "clojure" -o
+		   "$args" = *"all"* ]; then
 	    curl -s "https://get.sdkman.io" | bash
 	    source $HOME/.sdkman/bin/sdkman-init.sh
 	fi
@@ -210,4 +155,4 @@ fi
 
 # Duplicate .zshrc -> .zshenv for use with GUI Emacs
 cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
-sudo chsh -s $(which zsh) ubuntu
+sudo chsh -s $(which zsh) vagrant
