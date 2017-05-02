@@ -14,7 +14,7 @@ ln -s /vagrant/tmp $HOME/tmp
 sudo apt-get -y autoremove
 sudo apt-get update
 sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
-sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc
+sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc lldb
 
 # Install for startx to work on Ubuntu/Xenial64
 sudo apt-get -y install xserver-xorg-legacy
