@@ -67,7 +67,8 @@ git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 # [php] maybe worth installing, but not necessary: libfcgi-dev 
 sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
 libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
-python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev
+python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev \
+python-pip python-setuptools
 
 sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
 libcurl4-openssl-dev libffi-dev
