@@ -14,7 +14,7 @@ ln -s /vagrant/tmp $HOME/tmp
 sudo apt-get -y autoremove
 sudo apt-get update
 sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
-sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc lldb
+sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc gdb
 
 # Install for startx to work on Ubuntu/Xenial64
 sudo apt-get -y install xserver-xorg-legacy
@@ -82,7 +82,7 @@ libxslt-dev libncurses-dev libedit-dev
 mkdir $HOME/.virtualenvs
 
 # Configure programming languages
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.2.0
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.3.0
 
 ASDF="
 # ASDF-VM
@@ -151,6 +151,10 @@ if [ -n "$args" ]; then
 	elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
 	   asdf plugin-add lua https://github.com/Stratus3D/asdf-lua
 	   asdf install lua 5.3.3
+
+	elif [ "$var" = "haskell" -o "$args" = *"all"* ]; then
+	   asdf plugin-add haskell https://github.com/vic/asdf-haskell
+	   asdf install haskell 8.0.2
 
 	elif [ "$var" = "java" -o 
 		   "$var" = "groovy" -o 
