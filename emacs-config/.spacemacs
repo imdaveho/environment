@@ -23,27 +23,26 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     helm
      auto-completion
      ;; better-defaults
      emacs-lisp
      elm
      markdown
      python
-     ;; ruby
+     ruby
      html
      go
-     ;; rust
-     ;; lua
+     rust
      javascript
-     ;; php
+     php
      yaml
      shell-scripts
-     ;; swift
      typescript
      sql
-
      git
-     ;; markdown
+     markdown
+     yaml
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -56,7 +55,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages 
+   dotspacemacs-additional-packages
    '(
      evil-vimish-fold
      )
@@ -269,6 +268,9 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (evil-vimish-fold-mode 1)
+  (dumb-jump-mode)
+  (setq dumb-jump-selector 'ivy)
+  (setq dumb-jump-force-searcher 'ag)
   ;; (global-linum-mode)
   )
 

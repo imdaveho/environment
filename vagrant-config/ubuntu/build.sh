@@ -13,7 +13,7 @@ ln -s /vagrant/tmp $HOME/tmp
 # Install Common Packages
 sudo apt-get -y autoremove
 sudo apt-get update
-sudo apt-get -y install vim git zsh build-essential make curl unzip \
+sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
 sed emacs xorg dwm xrdp gnutls-bin sqlite3 fonts-hack-ttf binutils gcc
 
 # Install for startx to work on Ubuntu/Xenial64
@@ -67,17 +67,17 @@ git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 # [php] maybe worth installing, but not necessary: libfcgi-dev 
 sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
 libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
-python3-dev python-software-properties
+python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev
 
 sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
 libcurl4-openssl-dev libffi-dev
 
 sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
 libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
-autoconf autoload libtidy-dev re2c
+autoconf libtidy-dev re2c
 
 sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
-libxslt-dev libncurses-dev
+libxslt-dev libncurses-dev libedit-dev
 
 mkdir $HOME/.virtualenvs
 
@@ -130,12 +130,14 @@ if [ -n "$args" ]; then
         
 	elif [ "$var" = "node" -o "$args" = *"all"* ]; then
         asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs
+	export GNUPGHOME="$HOME/.asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
+	bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
 		asdf install nodejs 7.2.1
 
 	# the below require more use to see if it works as intended
 	elif [ "$var" = "php" -o "$args" = *"all"* ]; then
 	    asdf plugin-add php https://github.com/odarriba/asdf-php
-	    # asdf install php 7.0.11
+	    asdf install php 7.0.11
 	    # asdf install php 5.3.10
 
 	elif [ "$var" = "go" -o "$args" = *"all"* ]; then
@@ -144,7 +146,7 @@ if [ -n "$args" ]; then
 
 	elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
 	    # official rust version manager
-	    curl https://sh.rustup.rs -sSf | sh
+	    curl https://sh.rustup.rs -sSfy | sh
 	
 	elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
 	   asdf plugin-add lua https://github.com/Stratus3D/asdf-lua
@@ -153,7 +155,7 @@ if [ -n "$args" ]; then
 	elif [ "$var" = "java" -o 
 		   "$var" = "groovy" -o 
 		   "$var" = "scala" -o 
-		   "$var" = "clojure" -o
+		   "$var" = "clojure" -o 
 		   "$args" = *"all"* ]; then
 	    curl -s "https://get.sdkman.io" | bash
 	    source $HOME/.sdkman/bin/sdkman-init.sh
