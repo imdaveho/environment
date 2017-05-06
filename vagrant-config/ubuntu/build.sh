@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export HOME=/home/vagrant
 VBOX_NAME="vagrant"
 
@@ -63,7 +65,7 @@ git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 # [rb] https://gorails.com/setup/ubuntu/16.04
 # [php] http://www.tecmint.com/install-and-compile-php-7-on-centos-7-and-debian-8/
 # [php] http://jcutrer.com/howto/linux/how-to-compile-php7-on-ubuntu-14-04
-# [php] maybe worth installing, but not necessary: libfcgi-dev 
+# [php] maybe worth installing, but not necessary: libfcgi-dev
 sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
 libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
 python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev \
@@ -80,7 +82,7 @@ sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
 libxslt-dev libncurses-dev libedit-dev
 
 # Install termite
-sudo apt-get install -y libgtk-3-dev gtk-docs-tools valac intltool libpcre2-dev \
+sudo apt-get install -y libgtk-3-dev gtk-doc-tools valac intltool libpcre2-dev \
 libglib3.0-cil-dev libgnutls28-dev libgirepository1.0-dev libxml2-utils gperf
 
 echo export LIBRARY_PATH=/usr/include/gtk-3.0:$LIBRARY_PATH
@@ -88,8 +90,8 @@ mkdir -p $HOME/tmp/tools
 git clone --recursive https://github.com/thestinger/termite.git $HOME/tmp/tools/termite
 git clone https://github.com/thestinger/vte-ng.git $HOME/tmp/tools/vte-ng
 
-cd $HOME/tmp/vte-ng && ./autogen.sh && make && sudo make install
-cd ../termite && make && sudo make install
+cd $HOME/tmp/tools/vte-ng && ./autogen.sh && make && sudo make install
+cd $HOME/tmp/tools/termite && make && sudo make install
 sudo ldconfig
 sudo mkdir -p /lib/terminfo/x; sudo ln -s \
 /usr/local/share/terminfo/x/xterm-termite \
@@ -97,6 +99,9 @@ sudo mkdir -p /lib/terminfo/x; sudo ln -s \
 
 mkdir -p $HOME/.config/termite
 cp $HOME/tmp/environment/shell-config/babun-termite $HOME/.config/termite/config
+
+# Install exa
+# TODO: steps for libgit2
 
 mkdir $HOME/.virtualenvs
 
@@ -126,77 +131,126 @@ if [ -d "${HOME}/.asdf" ];then
     . ${HOME}/.asdf/completions/asdf.bash
 fi
 
-args="$*"
+# Install functions
+function install_mysql() {
+    sudo apt-get -y install libmysqlclient-dev mysql-client
+}
+
+function install_postgres() {
+    sudo apt-get -y install postgresql postgresql-contrib libpq-dev postgresql-server-dev-all
+}
+
+function install_x() {
+	  # Install for startx to work on Ubuntu/Xenial64
+	  sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
+	  sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
+}
+
+function install_wayland() {
+	  echo "wayland is not supported yet"
+    install_x
+}
+
+function install_python() {
+    asdf plugin-add python https://github.com/tuvistavie/asdf-python
+    asdf install python 2.7.13
+    asdf install python 3.6.1
+    mkdir $HOME/.virtualenvs/venvs
+}
+
+function install_ruby() {
+    asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby
+    asdf install ruby 2.4.1
+    mkdir $HOME/.virtualenvs/gemsets
+}
+
+function install_node() {
+    asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs
+    export GNUPGHOME="$HOME/.asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
+    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    asdf install nodejs 7.10.0
+}
+
+function install_php() {
+    asdf plugin-add php https://github.com/odarriba/asdf-php
+    asdf install php 7.0.11
+}
+
+function install_go() {
+    asdf plugin-add golang https://github.com/kennyp/asdf-golang
+    asdf install golang 1.8.1
+}
+
+function install_rust() {
+    # official rust version manager
+    curl https://sh.rustup.rs -sSfy | sh
+}
+
+function install_lua() {
+    asdf plugin-add lua https://github.com/Stratus3D/asdf-lua
+    asdf install lua 5.3.4
+}
+
+function install_haskell() {
+    asdf plugin-add haskell https://github.com/vic/asdf-haskell
+    asdf install haskell 8.0.2
+}
+
+function install_jvm() {
+    curl -s "https://get.sdkman.io" | bash
+    source $HOME/.sdkman/bin/sdkman-init.sh
+}
+
+function install_all() {
+    install_mysql
+    install_postgres
+    install_python
+    install_ruby
+    install_node
+    install_php
+    install_go
+    install_rust
+    install_lua
+    install_haskell
+    install_jvm
+}
+
+args=$*
 if [ -n "$args" ]; then
-    for var in $args
-    do
-	      if [ "$var" = "mysql" -o "$args" = *"all"* ]; then
-            sudo apt-get -y install libmysqlclient-dev mysql-client
-
-	      elif [ "$var" = "postgresql" -o "$args" = *"all"* ]; then
-            sudo apt-get -y install postgresql postgresql-contrib libpq-dev postgresql-server-dev-all
-
-	      elif [ "$var" = "x" ]; then
-            # Install for startx to work on Ubuntu/Xenial64
-            sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
-            sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
-
-	      elif [ "$var" = "wayland" ]; then
-	          echo "wayland not supported yet"
-	          # Install for startx to work on Ubuntu/Xenial64
-	          sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
-	          sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
-
-        elif [ "$var" = "python" -o "$args" = *"all"* ]; then
-            asdf plugin-add python https://github.com/tuvistavie/asdf-python
-	          asdf install python 2.7.13
-	          asdf install python 3.6.1
-	          mkdir $HOME/.virtualenvs/venvs
-
-	      elif [ "$var" = "ruby" -o "$args" = *"all"* ]; then
-            asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby
-	          asdf install ruby 2.4.1
-	          mkdir $HOME/.virtualenvs/gemsets
-
-	      elif [ "$var" = "node" -o "$args" = *"all"* ]; then
-            asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs
-	          export GNUPGHOME="$HOME/.asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
-	          bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
-	          asdf install nodejs 7.10.0
-
-	          # the below require more use to see if it works as intended
-	      elif [ "$var" = "php" -o "$args" = *"all"* ]; then
-	          asdf plugin-add php https://github.com/odarriba/asdf-php
-	          asdf install php 7.0.11
-	          # asdf install php 5.3.10
-
-	      elif [ "$var" = "go" -o "$args" = *"all"* ]; then
-	          asdf plugin-add golang https://github.com/kennyp/asdf-golang
-	          asdf install golang 1.8.1
-
-	      elif [ "$var" = "rust" -o "$args" = *"all"* ]; then
-	          # official rust version manager
-	          curl https://sh.rustup.rs -sSfy | sh
-
-	      elif [ "$var" = "lua" -o "$args" = *"all"* ]; then
-	          asdf plugin-add lua https://github.com/Stratus3D/asdf-lua
-	          asdf install lua 5.3.4
-
-	      elif [ "$var" = "haskell" -o "$args" = *"all"* ]; then
-	          asdf plugin-add haskell https://github.com/vic/asdf-haskell
-	          asdf install haskell 8.0.2
-
-	      elif [ "$var" = "java" -o
-		           "$var" = "groovy" -o
-		           "$var" = "scala" -o
-		           "$var" = "clojure" -o
-		           "$args" = *"all"* ]; then
-	          curl -s "https://get.sdkman.io" | bash
-	          source $HOME/.sdkman/bin/sdkman-init.sh
-	      fi
+    if [[ "$args" = *"all"* ]]; then
+        install_all
+    fi
+    for var in $args; do
+        if [[ "$var" == "x" ]]; then
+            install_x
+	      elif [[ "$var" == "wayland" ]]; then
+            install_wayland
+        elif [[ "$var" = "mysql" ]]; then
+            install_mysql
+	      elif [[ "$var" = "postgresql" ]]; then
+            install_postgres
+	      elif [[ "$var" = "python" ]]; then
+            install_python
+	      elif [[ "$var" = "ruby" ]]; then
+            install_ruby
+        elif [[ "$var" = "node" ]]; then
+            install_node
+        elif [[ "$var" = "php" ]]; then 
+            install_php
+        elif [[ "$var" = "go" ]]; then
+            install_go
+        elif [[ "$var" = "rust" ]]; then
+            install_rust
+        elif [[ "$var" = "lua" ]]; then
+            install_lua
+        elif [[ "$var" = "haskell" ]]; then
+            install_haskell
+        elif [[ "$var" = "java" || "$var" = "groovy" || "$var" = "scala" || "$var" = "clojure" ]]; then
+            install_jvm
+        fi
     done
 fi
 
 # Duplicate .zshrc -> .zshenv for use with GUI Emacs
-cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
+# cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshenv
 sudo chsh -s $(which zsh) vagrant
