@@ -29,9 +29,6 @@ ln -s /vagrant/tmp/environment/emacs-config/.spacemacs $HOME/.spacemacs
 git clone https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
 
 # Oh My Zsh Theme
-# curl -o ~/.oh-my-zsh/custom/babun.zsh-theme \
-# https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-babun.zsh-theme
-# ln -s /vagrant/tmp/environment/shell-config/vagrant-babun.zsh-theme $HOME/.oh-my-zsh/custom/babun.zsh-theme
 THEME_SETTINGS="
 local return_code=\"%(?..%{\$fg[red]%}%? %{\$reset_color%})\"
 
@@ -53,33 +50,10 @@ touch $HOME/.oh-my-zsh/custom/babun.zsh-theme
 echo "{$THEME_SETTINGS}" >> $HOME/.oh-my-zsh/custom/babun.zsh-theme
 
 # Oh My Zsh Config
-# curl -o ~/.zshrc https://raw.githubusercontent.com/imdaveho/environment/master/shell-config/vagrant-zshrc
-# ln -s /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
 cp /vagrant/tmp/environment/shell-config/vagrant-zshrc $HOME/.zshrc
 
 # Emacs (Spacemacs)
 git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-
-
-# [py] http://askubuntu.com/questions/21547/what-are-the-packages-libraries-i-should-install-before-compiling-python-from-so
-# [rb] https://gorails.com/setup/ubuntu/16.04
-# [php] http://www.tecmint.com/install-and-compile-php-7-on-centos-7-and-debian-8/
-# [php] http://jcutrer.com/howto/linux/how-to-compile-php7-on-ubuntu-14-04
-# [php] maybe worth installing, but not necessary: libfcgi-dev
-sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
-libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
-python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev \
-python-pip python-setuptools
-
-sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
-libcurl4-openssl-dev libffi-dev
-
-sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
-libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
-autoconf libtidy-dev re2c
-
-sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
-libxslt-dev libncurses-dev libedit-dev
 
 # Install termite
 sudo apt-get install -y libgtk-3-dev gtk-doc-tools valac intltool libpcre2-dev \
@@ -100,8 +74,17 @@ sudo mkdir -p /lib/terminfo/x; sudo ln -s \
 mkdir -p $HOME/.config/termite
 cp $HOME/tmp/environment/shell-config/babun-termite $HOME/.config/termite/config
 
-# Install exa
-# TODO: steps for libgit2
+# exa (rust will be installed)
+cd $HOME/tmp/tools
+curl https://sh.rustup.rs -sSf >> rustup.sh
+sh rustup.sh -y
+rm rustup.sh
+git clone https://github.com/ogham/exa
+cd exa
+# TODO: investigate why regular make won't work
+# and gives cannot change permissions error on run
+sudo make install
+echo '\nalias lk="exa -ghlaHTL 2 --git"' >> ~/.zshrc
 
 mkdir $HOME/.virtualenvs
 
@@ -131,6 +114,29 @@ if [ -d "${HOME}/.asdf" ];then
     . ${HOME}/.asdf/completions/asdf.bash
 fi
 
+# [py] http://askubuntu.com/questions/21547/what-are-the-packages-libraries-i-should-install-before-compiling-python-from-so
+# [rb] https://gorails.com/setup/ubuntu/16.04
+# [php] http://www.tecmint.com/install-and-compile-php-7-on-centos-7-and-debian-8/
+# [php] http://jcutrer.com/howto/linux/how-to-compile-php7-on-ubuntu-14-04
+# [php] maybe worth installing, but not necessary: libfcgi-dev
+
+# sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
+# libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
+# python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev \
+# python-pip python-setuptools
+
+# sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
+# libcurl4-openssl-dev libffi-dev
+
+# sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
+# libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
+# autoconf libtidy-dev re2c
+
+# sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
+# libxslt-dev libncurses-dev libedit-dev
+
+sudo apt-get -y install direnv
+
 # Install functions
 function install_mysql() {
     sudo apt-get -y install libmysqlclient-dev mysql-client
@@ -152,6 +158,9 @@ function install_wayland() {
 }
 
 function install_python() {
+    sudo apt-get install -y libz-dev libreadline-dev libncursesw5-dev libssl-dev libgdbm-dev \
+         libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev
+    # python-dev python3-dev python-software-properties python-pip python-setuptools
     asdf plugin-add python https://github.com/tuvistavie/asdf-python
     asdf install python 2.7.13
     asdf install python 3.6.1
@@ -159,6 +168,9 @@ function install_python() {
 }
 
 function install_ruby() {
+    sudo apt-get install -y git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev \
+         libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev \
+         python-software-properties libffi-dev nodejs
     asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby
     asdf install ruby 2.4.1
     mkdir $HOME/.virtualenvs/gemsets
@@ -172,6 +184,10 @@ function install_node() {
 }
 
 function install_php() {
+    sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev \
+         libmysqlclient-dev libicu-dev libfreetype6-dev libxslt-dev libssl-dev libbz2-dev \
+         libgmp-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev bison autoconf \
+         libtidy-dev re2c
     asdf plugin-add php https://github.com/odarriba/asdf-php
     asdf install php 7.0.11
 }
@@ -179,11 +195,6 @@ function install_php() {
 function install_go() {
     asdf plugin-add golang https://github.com/kennyp/asdf-golang
     asdf install golang 1.8.1
-}
-
-function install_rust() {
-    # official rust version manager
-    curl https://sh.rustup.rs -sSfy | sh
 }
 
 function install_lua() {
@@ -209,7 +220,6 @@ function install_all() {
     install_node
     install_php
     install_go
-    install_rust
     install_lua
     install_haskell
     install_jvm
@@ -239,8 +249,6 @@ if [ -n "$args" ]; then
             install_php
         elif [[ "$var" = "go" ]]; then
             install_go
-        elif [[ "$var" = "rust" ]]; then
-            install_rust
         elif [[ "$var" = "lua" ]]; then
             install_lua
         elif [[ "$var" = "haskell" ]]; then
