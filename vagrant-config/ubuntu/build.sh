@@ -85,7 +85,7 @@ cd exa
 # TODO: investigate why regular make won't work
 # and gives cannot change permissions error on run
 sudo make install
-echo '\nalias lk="exa -ghlaHTL 2 --git"' >> ~/.zshrc
+echo 'alias lk="exa -ghlaHTL 2 --git"' >> ~/.zshrc
 
 mkdir $HOME/.virtualenvs
 
@@ -121,20 +121,8 @@ fi
 # [php] http://jcutrer.com/howto/linux/how-to-compile-php7-on-ubuntu-14-04
 # [php] maybe worth installing, but not necessary: libfcgi-dev
 
-# sudo apt-get -y install libz-dev libreadline-dev libncursesw5-dev libssl-dev \
-# libgdbm-dev libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev python-dev \
-# python3-dev python-software-properties libssh-dev libssh2-1-dev libgit2-dev \
-# python-pip python-setuptools
-
-# sudo apt-get -y install zlib1g-dev libyaml-dev libxml2-dev libxslt1-dev \
-# libcurl4-openssl-dev libffi-dev
-
-# sudo apt-get -y install libjpeg-dev libpng-dev libxpm-dev libicu-dev bison \
-# libfreetype6-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev libgmp-dev \
-# autoconf libtidy-dev re2c
-
 # sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
-# libxslt-dev libncurses-dev libedit-dev
+# libxslt-dev libncurses-dev 
 
 sudo apt-get -y install direnv
 
@@ -161,7 +149,6 @@ function install_wayland() {
 function install_python() {
     sudo apt-get install -y libz-dev libreadline-dev libncursesw5-dev libssl-dev libgdbm-dev \
          libsqlite3-dev libbz2-dev liblzma-dev libdb-dev tk-dev
-    # python-dev python3-dev python-software-properties python-pip python-setuptools
     asdf plugin-add python https://github.com/tuvistavie/asdf-python
     asdf install python 2.7.13
     asdf install python 3.6.1
@@ -188,7 +175,7 @@ function install_php() {
     sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libjpeg-dev libpng-dev libxpm-dev \
          libmysqlclient-dev libicu-dev libfreetype6-dev libxslt-dev libssl-dev libbz2-dev \
          libgmp-dev libmcrypt-dev libpspell-dev librecode-dev apache2-dev bison autoconf \
-         libtidy-dev re2c
+         libtidy-dev re2c libedit-dev
     asdf plugin-add php https://github.com/odarriba/asdf-php
     asdf install php 7.0.11
 }
