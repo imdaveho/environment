@@ -79,6 +79,7 @@ cd $HOME/tmp/tools
 curl https://sh.rustup.rs -sSf >> rustup.sh
 sh rustup.sh -y
 rm rustup.sh
+source $HOME/.cargo/env
 git clone https://github.com/ogham/exa
 cd exa
 # TODO: investigate why regular make won't work
