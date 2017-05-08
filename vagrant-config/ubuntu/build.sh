@@ -124,7 +124,7 @@ fi
 # [php] maybe worth installing, but not necessary: libfcgi-dev
 
 # sudo apt-get -y install zip direnv libgtk2.0 libnss3 libtool unixodbc-dev \
-# libxslt-dev libncurses-dev 
+# libxslt-dev libncurses-dev
 
 sudo apt-get -y install direnv
 
@@ -138,13 +138,13 @@ function install_postgres() {
 }
 
 function install_x() {
-	  # Install for startx to work on Ubuntu/Xenial64
-	  sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
-	  sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
+    # Install for startx to work on Ubuntu/Xenial64
+    sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
+    sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
 }
 
 function install_wayland() {
-	  echo "wayland is not supported yet"
+    echo "wayland is not supported yet"
     install_x
 }
 
@@ -235,7 +235,7 @@ if [ -n "$args" ]; then
             install_ruby
         elif [[ "$var" = "node" ]]; then
             install_node
-        elif [[ "$var" = "php" ]]; then 
+        elif [[ "$var" = "php" ]]; then
             install_php
         elif [[ "$var" = "go" ]]; then
             install_go
