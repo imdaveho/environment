@@ -85,9 +85,11 @@ cd exa
 # TODO: investigate why regular make won't work
 # and gives cannot change permissions error on run
 sudo make install
-echo 'alias lk="exa -ghlaHTL 2 --git"' >> ~/.zshrc
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $HOME/.zshrc
+echo '' >> $HOME/.zshrc
+echo 'alias lk="exa -ghlaHTL 2 --git"' >> $HOME/.zshrc
 
-mkdir $HOME/.virtualenvs
+# mkdir $HOME/.virtualenvs
 
 # Configure programming languages
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.3.0
@@ -152,7 +154,7 @@ function install_python() {
     asdf plugin-add python https://github.com/tuvistavie/asdf-python
     asdf install python 2.7.13
     asdf install python 3.6.1
-    mkdir $HOME/.virtualenvs/venvs
+    # mkdir $HOME/.virtualenvs/venvs
 }
 
 function install_ruby() {
@@ -161,7 +163,7 @@ function install_ruby() {
          python-software-properties libffi-dev nodejs
     asdf plugin-add ruby https://github.com/asdf-vm/asdf-ruby
     asdf install ruby 2.4.1
-    mkdir $HOME/.virtualenvs/gemsets
+    # mkdir $HOME/.virtualenvs/gemsets
 }
 
 function install_node() {
