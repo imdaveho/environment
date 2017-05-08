@@ -168,7 +168,7 @@ function install_ruby() {
 
 function install_node() {
     asdf plugin-add nodejs https://github.com/asdf-vm/asdf-nodejs
-    export GNUPGHOME="$HOME/.asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
+    echo export GNUPGHOME="$HOME/.asdf/keyrings/nodejs" && mkdir -p "$GNUPGHOME" && chmod 0700 "$GNUPGHOME"
     bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
     asdf install nodejs 7.10.0
 }
