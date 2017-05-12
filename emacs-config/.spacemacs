@@ -46,6 +46,7 @@ values."
      c-c++
      '((c-c++ :variable c-c++-enable-clang-support t))
      cscope
+     shell
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
