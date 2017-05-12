@@ -16,7 +16,11 @@ ln -s /vagrant/tmp $HOME/tmp
 sudo apt-get -y autoremove
 sudo apt-get update
 sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
-sed emacs gnutls-bin sqlite3 fonts-hack-ttf binutils
+sed emacs gnutls-bin sqlite3 fonts-hack-ttf binutils silversearcher-ag
+
+# Install Midori Browser
+sudo apt-add-repository ppa:midori/ppa && sudo apt-get update -qq && \
+sudo apt-get install midori
 
 # Install Common C packages
 sudo apt-get -y install gcc gdb lldb llvm clang-3.8 g++

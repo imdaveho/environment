@@ -43,6 +43,9 @@ values."
      git
      markdown
      yaml
+     c-c++
+     '((c-c++ :variable c-c++-enable-clang-support t))
+     cscope
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
