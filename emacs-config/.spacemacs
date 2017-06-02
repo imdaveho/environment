@@ -43,8 +43,7 @@ values."
      git
      markdown
      yaml
-     c-c++
-     '((c-c++ :variable c-c++-enable-clang-support t))
+     (c-c++ :variables c-c++-enable-clang-support t)
      cscope
      shell
      ;; org

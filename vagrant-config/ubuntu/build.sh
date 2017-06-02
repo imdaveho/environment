@@ -18,6 +18,9 @@ sudo apt-get update
 sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
 sed emacs gnutls-bin sqlite3 fonts-hack-ttf binutils silversearcher-ag firefox
 
+# Install pip for system Python
+sudo apt-get -y install python-pip python-dev
+
 # Install Common C packages
 sudo apt-get -y install gcc gdb lldb llvm clang-3.8 g++
 
@@ -217,33 +220,33 @@ function install_all() {
 
 args=$*
 if [ -n "$args" ]; then
-    if [[ "$args" = *"all"* ]]; then
+    if [[ "$args" == *"all"* ]]; then
         install_all
     fi
     for var in $args; do
         if [[ "$var" == "x" ]]; then
             install_x
-	      elif [[ "$var" == "wayland" ]]; then
+        elif [[ "$var" == "wayland" ]]; then
             install_wayland
-        elif [[ "$var" = "mysql" ]]; then
+        elif [[ "$var" == "mysql" ]]; then
             install_mysql
-	      elif [[ "$var" = "postgresql" ]]; then
+        elif [[ "$var" == "postgresql" ]]; then
             install_postgres
-	      elif [[ "$var" = "python" ]]; then
+        elif [[ "$var" == "python" ]]; then
             install_python
-	      elif [[ "$var" = "ruby" ]]; then
+        elif [[ "$var" == "ruby" ]]; then
             install_ruby
-        elif [[ "$var" = "node" ]]; then
+        elif [[ "$var" == "node" ]]; then
             install_node
-        elif [[ "$var" = "php" ]]; then
+        elif [[ "$var" == "php" ]]; then
             install_php
-        elif [[ "$var" = "go" ]]; then
+        elif [[ "$var" == "go" ]]; then
             install_go
-        elif [[ "$var" = "lua" ]]; then
+        elif [[ "$var" == "lua" ]]; then
             install_lua
-        elif [[ "$var" = "haskell" ]]; then
+        elif [[ "$var" == "haskell" ]]; then
             install_haskell
-        elif [[ "$var" = "java" || "$var" = "groovy" || "$var" = "scala" || "$var" = "clojure" ]]; then
+        elif [[ "$var" == "java" || "$var" == "groovy" || "$var" == "scala" || "$var" == "clojure" ]]; then
             install_jvm
         fi
     done
