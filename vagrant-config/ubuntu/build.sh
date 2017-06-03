@@ -142,8 +142,7 @@ function install_postgres() {
 
 function install_x() {
     # Install for startx to work on Ubuntu/Xenial64
-    sudo apt-get -y install xorg dwm xrdp xserver-xorg-legacy
-    sudo apt-get -y install virtualbox-guest-x11 virtualbox-guest-dkms
+    sudo apt-get -y install xorg dwm
 }
 
 function install_wayland() {
