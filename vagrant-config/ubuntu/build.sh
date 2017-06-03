@@ -15,7 +15,7 @@ ln -s /vagrant/tmp $HOME/tmp
 # Install Common Packages
 sudo apt-get -y autoremove
 sudo apt-get update
-sudo apt-get -y install vim git zsh build-essential make cmake curl unzip \
+sudo apt-get -y install vim git zsh build-essential make cmake curl unzip zip \
 sed emacs gnutls-bin sqlite3 fonts-hack-ttf binutils silversearcher-ag firefox
 
 # Install pip for system Python
