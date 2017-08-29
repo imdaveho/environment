@@ -29,6 +29,7 @@ values."
      emacs-lisp
      elm
      markdown
+     clojure
      python
      ruby
      html
