@@ -45,10 +45,10 @@ values."
      (c-c++ :variables c-c++-enable-clang-support t)
      cscope
      shell
-     org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
+     ;; org
+     ;; (shell :variables
+     ;;        shell-default-height 30
+     ;;        shell-default-position 'bottom)
      spell-checking
      syntax-checking
      version-control
@@ -126,7 +126,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("DejaVu Sans Mono"
+   dotspacemacs-default-font '("Hack"
                                :size 13
                                :weight normal
                                :width normal
