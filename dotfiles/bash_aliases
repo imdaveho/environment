@@ -1,0 +1,28 @@
+alias vim="nvim"
+alias reconfig="source ~/.bashrc"
+
+bind '"\e[A": history-search-backward'
+bind '"\eOA": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\eOB": history-search-forward'
+
+function cdd() {
+  cd $HOME/devel/$1
+}
+
+export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export GOPATH="$HOME/devel/golang"
+export PATH="$HOME/devel/usr/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+
+alias lk="exa -ghlaHTL 2 --git"
+
+if [ -d "${HOME}/.asdf" ];then
+    . ${HOME}/.asdf/asdf.sh
+    . ${HOME}/.asdf/completions/asdf.bash
+fi
+
+if direnv_loc=$(type -p "direnv") || ! [ -z "$direnv_loc" ];then
+    eval "$(direnv hook bash)"
+fi
