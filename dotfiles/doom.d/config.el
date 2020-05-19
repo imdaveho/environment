@@ -54,8 +54,25 @@
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq default-frame-alist '( (width . 100) (height . 46)))
+;; User Config ================================================================
 
-(setq rustic-lsp-server 'rust-analyzer)
+;; init
+(setq default-directory "~/devel")
+(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(width . 100))
+
+;; helm
+;; (customize-set-variable 'helm-ff-lynx-style-map t)
+
+;; rust
+(setq lsp-rust-server 'rust-analyzer)
 (setq lsp-rust-analyzer-server-command '("~/devel/usr/bin/rust-analyzer"))
-
+(defun add-rustic-clippy ()
+  (push 'rustic-clippy flycheck-checkers))
+(add-hook 'rustic-mode-local-vars-hook #'add-rustic-clippy)
+(remove-hook 'rustic-mode-hook 'flycheck-mode)
+;;
+;; (defun rustic-checker ()
+;;   (flycheck-select-checker 'rustic-clippy))
+;; (add-hook 'rustic-mode-local-vars-hook #'lsp-deferred)
+;; (add-hook 'rustic-mode-local-vars-hook #'rustic-checker)
