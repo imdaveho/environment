@@ -65,8 +65,9 @@
 ;; (customize-set-variable 'helm-ff-lynx-style-map t)
 
 ;; rust
-(setq lsp-rust-server 'rust-analyzer)
-(setq lsp-rust-analyzer-server-command '("~/devel/usr/bin/rust-analyzer"))
+;; (setq lsp-rust-server 'rust-analyzer)
+;; (setq lsp-rust-analyzer-server-command '("~/devel/usr/bin/rust-analyzer"))
+(setq rustic-lsp-server 'rust-analyzer)
 (defun add-rustic-clippy ()
   (push 'rustic-clippy flycheck-checkers))
 (add-hook 'rustic-mode-local-vars-hook #'add-rustic-clippy)
