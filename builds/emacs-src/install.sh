@@ -1,34 +1,24 @@
 #!/bin/bash
 
+# Ensure dependencies are met:
+# checkinstall may need a new source to be added to /etc/apt/sources.list.d/
+# sudo apt install -y checkinstall
+
+# Debian (Buster) - Linux on ChromeOS
+# from: https://www.emacswiki.org/emacs/BuildingEmacs
+sudo apt install -y autoconf texinfo libgnutls28-dev libc6-dev libjpeg62-turbo libncurses5-dev libpng-dev libtiff5-dev libgif-dev xaw3dg-dev zlib1g-dev libx11-dev libgtk-3-dev libwebkit2gtk-4.0-dev
+
 git clone --depth=1 --branch emacs-27 https://github.com/emacs-mirror/emacs
 cd emacs
 
 ./autogen.sh
-./configure --with-gnutls --with-cairo --with-dbus
-make
-sudo checkinstall
+./configure --with-gnutls --with-cairo --with-dbus --with-xwidgets --with-x-toolkit=gtk3
+# Install with checkinstall to create the .deb file
+# sudo checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" --install=no
+# ChromeOS permissions workaround:
+sudo checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" --install=no --fstrans=no && \
 
-cp ./*.deb ../
-cd ..
-rm -rf emacs
-
-# cd ..
-# rm -rf emacs
-
-# # rust is required (use rustup)
-# if rust_loc=$(type -p "cargo") || ! [ -z "$rust_loc" ];then
-#   export CARGO_HOME=$(pwd)
-#   export PATH=$PATH:$CARGO_HOME/bin
-# 
-#   git clone https://github.com/sharkdp/fd
-#   cd fd
-#   cargo build --release
-#   cp ./target/release/fd $HOME/devel/usr/bin
-#   cd $CARGO_HOME &&
-#     rm -rf ./fd &&
-#     rm -rf ./registry &&
-#     rm -r ./.package-cache
-# 
-# else
-#   echo "Rust is required. Please install with rustup."
-# fi
+  # Uninstall from make
+  cp ./*.deb ../ && sudo make uninstall && \
+  # Cleanup
+  cd .. && sudo rm -rf emacs
