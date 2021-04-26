@@ -13,12 +13,14 @@ cd emacs
 
 ./autogen.sh
 ./configure --with-gnutls --with-cairo --with-dbus --with-xwidgets --with-x-toolkit=gtk3
+make
 # Install with checkinstall to create the .deb file
 # sudo checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" --install=no
 # ChromeOS permissions workaround:
-sudo checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" --install=no --fstrans=no && \
+sudo checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" --fstrans=no && \
 
   # Uninstall from make
   cp ./*.deb ../ && sudo make uninstall && \
   # Cleanup
-  cd .. && sudo rm -rf emacs
+  make clean && cd ..
+  # && sudo rm -rf emacs
