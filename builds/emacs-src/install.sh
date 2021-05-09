@@ -31,7 +31,7 @@
 # libxmu-dev libxmu-headers libxpm-dev libxrandr-dev libxtst-dev m17n-db \
 # nettle-dev pango1.0-tools wayland-protocols x11proto-input-dev \
 # x11proto-randr-dev x11proto-record-dev x11proto-xinerama-dev xaw3dg \
-# xaw3dg-dev xutils-dev
+# xaw3dg-dev xutils-dev libjansson4 libjansson-dev
 # (deleted bsd-mailx and postfix)
 
 git clone --depth=1 --branch emacs-27.2 https://github.com/emacs-mirror/emacs
@@ -43,11 +43,11 @@ touch description-pak && echo "GNU Emacs is an extensible, customizable text edi
 
 # Configure build
 ./autogen.sh
-./configure --prefix="$HOME/devel/usr/build/emacs27.2" --datarootdir="$HOME/.local/share" --with-gnutls --with-cairo --with-dbus
+# ./configure --prefix="$HOME/devel/usr/build/emacs27.2" --datarootdir="$HOME/.local/share" --with-gnutls --with-cairo --with-dbus --with-json
 
 # If blessmail errors (not sure why) then:
 # sudo apt install -y mailutils
-# ./configure --prefix="$HOME/devel/usr/build/emacs27.2" --datarootdir="$HOME/.local/share" --with-gnutls --with-cairo --with-dbus --with-mailutils
+./configure --prefix="$HOME/devel/usr/build/emacs27.2" --datarootdir="$HOME/.local/share" --with-gnutls --with-cairo --with-dbus --with-mailutils --with-json
 
 # Build Emacs (ChromeOS / chroot)
 # make && checkinstall --install=no --fstrans=no --pkgversion="27.2" --maintainer="org.gnu.emacs" -y && cp ./*.deb "$HOME/devel/usr/build/emacs27.2/" && \
