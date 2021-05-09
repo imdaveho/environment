@@ -49,14 +49,13 @@ touch description-pak && echo "GNU Emacs is an extensible, customizable text edi
 # sudo apt install -y mailutils
 ./configure --prefix="$HOME/devel/usr/build/emacs27.2" --datarootdir="$HOME/.local/share" --with-gnutls --with-cairo --with-dbus --with-mailutils --with-json
 
+# NOTE: if for some reason the local install doesn't cause the .desktop to appear in app launchers, install normally and run checkinstall with sudo
+
 # Build Emacs (ChromeOS / chroot)
-# make && checkinstall --install=no --fstrans=no --pkgversion="27.2" --maintainer="org.gnu.emacs" -y && cp ./*.deb "$HOME/devel/usr/build/emacs27.2/" && \
+# make && checkinstall --fstrans=no --pkgversion="27.2" --maintainer="org.gnu.emacs" -y && cp ./*.deb "$HOME/devel/usr/build/emacs27.2/" && \
 
 # Build Emacs (Linux)
-make && checkinstall --install=no --pkgversion="27.2" --maintainer="org.gnu.emacs" -y && cp ./*.deb "$HOME/devel/usr/build/emacs27.2/" && \
- make uninstall && \
- cd "$HOME/devel/usr/build/emacs27.2" && \
- sudo dpkg -i "emacs_27.2-1_amd64.deb"
+make && checkinstall --pkgversion="27.2" --maintainer="org.gnu.emacs" -y && cp ./*.deb "$HOME/devel/usr/build/emacs27.2/" 
 
 # Cleanup
 cd $HOME/devel/usr/src/emacs-src
