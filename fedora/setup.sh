@@ -165,6 +165,8 @@ languages=(
     "nodejs"
     "rust"
     "scala"
+    "lua"
+    "java"
 )
 for $lang in "${langauges[@]}"; do
     mkdir $HOME/Develop/build/$line
@@ -173,18 +175,39 @@ unset languages
 mkdir $HOME/Develop/usr/repo $HOME/Develop/usr/bin
 git clone https://github.com/imdaveho/environment \
     $HOME/Develop/usr/repo/environment
-sudo -S dnf -y install eza direnv <<< $SECRET
+sudo -S dnf -y install eza direnv ripgrep findutils fd <<< $SECRET
 # TODO: configure asdf-vm
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
 # installing java python golang nim clojure node scala
+asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
+# [golang] set GOPATH.../Develop/build/golang/.gomod
+# [golang] set GOROOT?
+asdf plugin-add java https://github.com/halcyon/asdf-java.git
+# [clojure] sudo dnf install rlwrap
+asdf plugin add clojure https://github.com/asdf-community/asdf-clojure.git
+asdf plugin add nim # install the asdf-nim plugin
+asdf nim install-deps  # install system-specific dependencies for downloading & building Nim
+asdf plugin-add python
+asdf plugin add scala https://github.com/asdf-community/asdf-scala
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+# [nodejs] corepack enable
+# [nodejs] corepack prepare pnpm@latest --activate
+# [nodejs] asdf reshim nodejs
+asdf plugin-add lua https://github.com/Stratus3D/asdf-lua.git
+# [rust]
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # TODO: installing all the LSP crap...maybe move to separate shell script?
 # TODO: configure doom emacs
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+# ~/.config/emacs/bin/doom install
 # TODO: installing rust/rustup
-# TODO: setting up GPG keys?
+# TODO: setting up GPG keys for github?
 # ssh-keygen -t ed25519 -C "your_email@example.com"
 # eval "$(ssh-agent -s)" # (to check if running)
 # ssh-add ~/.ssh/id_ed25519
 # cat ~/.ssh/id_ed25519.pub # (copy output)
 # add new SSH key in https://github.com/settings/keys
+# TODO: dnf install jetbrains-mono-fonts and nerd fonts
 
 # Manual steps
 echo "➡ Competing manual configuration."

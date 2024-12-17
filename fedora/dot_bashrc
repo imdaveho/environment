@@ -1,0 +1,86 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
+
+# User Configuration
+
+#PS1="\[\e[34m\]{ \[\e[35m\]dhtbdev\[\e[33m\]::\[\e[34m\]\W } \[\e[32m\]\$( git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "" )\[\e[31m\]»\[\e[0m\] "
+
+alias ls='ls --color=auto'
+alias la='ls -a --color=auto'
+alias ll='ls -l --color=auto'
+alias lla='ls -la --color=auto'
+alias grep='grep --colour=auto'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'
+
+alias cp="cp -i"                          # confirm before overwriting something
+alias df='df -h'                          # human-readable sizes
+alias free='free -m'                      # show sizes in MB
+alias more=less
+
+alias vim="nvim"
+alias nv="nvim"
+alias src="source ~/.bashrc"
+
+bind '"\e[A": history-search-backward'
+bind '"\eOA": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\eOB": history-search-forward'
+
+function cdd() {
+  cd $HOME/Develop/build/$1
+}
+
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export GOPATH="$HOME/Develop/build/golang/.gomodules"
+export PATH="$HOME/Develop/build/golang/.gomodules/bin:$PATH"
+#export PATH="$HOME/Develop/build/scala/.scala_modules/bin:$PATH"
+#export PATH="$HOME/.local/share/coursier/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$GOPATH/bin:$PATH"
+# export PATH="$HOME/Develop/usr/bin:$PATH"
+
+if [ -d "${HOME}/.asdf" ];then
+  . ${HOME}/.asdf/asdf.sh
+  . ${HOME}/.asdf/completions/asdf.bash
+  if java_path=$(type -p "java") || ! [ -z "$java_path" ];then
+    . ${HOME}/.asdf/plugins/java/set-java-home.bash
+  else
+    : # no-op()
+  fi
+fi
+
+if eza_path=$(type -p "eza") || ! [ -z "$eza_path" ];then
+  alias lk="eza -ghlaHTL 2 --git"
+fi
+
+if direnv_path=$(type -p "direnv") || ! [ -z "$direnv_path" ];then
+  eval "$(direnv hook bash)"
+fi
+
+if starship_path=$(type -p "starship") || ! [ -z "$starship_path" ];then
+  eval "$(starship init bash)"
+fi
