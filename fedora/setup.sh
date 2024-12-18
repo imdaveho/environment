@@ -128,6 +128,7 @@ if [[ "$input_data" =~ ^[Yy]$ ]]; then
     input_data="${input_data:-Y}"
     if [[ "$input_data" =~ ^[Yy]$ ]];then
         # TODO: clone emacs, set version, configure flags, build
+	# mkdir -p $HOME/Develop/usr/ext/source/emacs-$EMACS_VER
     fi
 else
     echo -e "Skipping installation of ${COLOR_R}Emacs build dependencies${RESET}.\n"
@@ -167,7 +168,7 @@ echo -e "[${COLOR_Y}crossover${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 # Setting up development environments
 echo "➡ Setting up development directories."
 read -p "Press enter to continue."
-mkdir -p $HOME/Develop/build $HOME/Develop/usr
+mkdir -p $HOME/Develop/src $HOME/Develop/usr
 languages=(
     "golang"
     "python"
@@ -180,11 +181,11 @@ languages=(
     "java"
     "flutter"
 )
-for lang in "${langauges[@]}"; do
-    mkdir $HOME/Develop/build/$lang
+for lang in "${languages[@]}"; do
+    mkdir $HOME/Develop/src/$lang
 done
 unset languages
-mkdir $HOME/Develop/usr/repo $HOME/Develop/usr/bin
+mkdir $HOME/Develop/usr/ext $HOME/Develop/usr/bin
 sudo -S dnf -y install eza direnv ripgrep findutils fd rlwrap <<< $SECRET
 echo -e "[${COLOR_Y}~/Develop${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 
@@ -310,7 +311,7 @@ if [[ "$input_data" =~ ^[Yy]$ ]]; then
 	read -p "⇾ Clone and copy over .bashrc from repo? (requires SSH key) [y/N]? " input_data 
 	input_data="${input_data:-N}"
         if [[ "$input_data" =~ ^[Yy]$ ]]; then
-            repo="$HOME/Develop/usr/repo/environment"
+            repo="$HOME/Develop/usr/ext/github/environment"
             git clone git@github.com:imdaveho/environment.git $repo
 	    cp $repo/fedora/dot_bashrc $HOME/.bashrc
 	fi
