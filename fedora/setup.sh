@@ -102,7 +102,7 @@ echo "➡ Installing default apps, packages, and libraries."
 read -p "Press enter to continue."
 echo "[flathub, zen, gnome-extensions, flatseal, neovim, gnome-tweaks, intel-media-driver, vlc, *python-build-dependencies]"
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub io.github.zen_browser.zen org.gnome.Extensions com.github.tchx84.Flatseal md.obsidian.Obsidian
+flatpak install flathub io.github.zen_browser.zen org.gnome.Extensions com.github.tchx84.Flatseal md.obsidian.Obsidian io.github.realmazharhussain.GdmSettings
 sudo -S dnf -y install neovim gnome-tweaks vlc intel-media-driver <<< $SECRET
 echo -e "[${COLOR_Y}defaults install${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 
