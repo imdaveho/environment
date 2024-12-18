@@ -121,14 +121,26 @@ echo "➡ Installing Emacs build dependencies."
 read -p "⇾ Proceed to install? [Y/n]? " input_data 
 input_data="${input_data:-Y}"
 if [[ "$input_data" =~ ^[Yy]$ ]]; then
-    emacs_build_deps="gcc make autoconf texinfo gnutls-devel libxml2-devel ncurses-devel gtk3-devel"
+    emacs_build_deps="gcc make autoconf texinfo gnutls-devel libxml2-devel ncurses-devel gtk3-devel libgccjit-devel libtree-sitter-devel jansson-devel giflib-devel systemd-devel libotf-devel librsvg2-devel lcms2-devel alsa-lib-devel libacl-devel libappstream-glib gpm-devel m17n-lib-devel"
     sudo -S dnf -y install $emacs_build_deps <<< $SECRET
     echo -e "[${COLOR_Y}emacs deps${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
     read -p "⇾ Build emacs from source? [Y/n]? " input_data 
     input_data="${input_data:-Y}"
     if [[ "$input_data" =~ ^[Yy]$ ]];then
-        # TODO: clone emacs, set version, configure flags, build
-	# mkdir -p $HOME/Develop/usr/ext/source/emacs-$EMACS_VER
+	active_dir=$(pwd)
+	EMACS_VER="29.3" # 29.4 (12.24.2024 Fedora 41 distro version)
+	                 # causes issues with doomemacs and raises 
+	                 # `doom doctor` warning. 
+	source_dir=$HOME/Develop/usr/ext/source/
+	cd $source_dir && wget https://ftp.gnu.org/gnu/emacs/emacs-$EMACS_VER.tar.xz
+	tar xvf emacs-$EMACS_VER.tar.xz
+	rm emacs-$EMACS_VER.tar.xz
+	cd emacs-$EMACS_VER
+	./configure --with-json --with-pgtk --with-tree-sitter --with-sound --with-native-compilation=aot
+	make
+	sudo -S make install <<< $SECRET
+	cd $active_dir
+    	echo -e "[${COLOR_Y}build emacs-$EMACS_VER${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
     fi
 else
     echo -e "Skipping installation of ${COLOR_R}Emacs build dependencies${RESET}.\n"
@@ -141,6 +153,9 @@ else
 fi
 unset python_build_deps
 unset emacs_build_deps
+unset EMACS_VER
+unset source_dir
+unset active_dir
 unset input_data
 
 
@@ -327,6 +342,8 @@ echo -e "[${COLOR_Y}github ssh${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 echo "➡ Competing manual configuration."
 echo "⇾ Settings > Privacy & Security > File History & Trash: "
 echo "  • Toggle Auto Deletion [ON]"
+echo "⇾ Settings > Multitasking"
+echo "  • Toggle Hot Corners [OFF]"
 echo "⇾ Settings > Power: "
 echo "  • Screen Blank -> [15 mins]"
 echo "  • Automatic Suspend -> [On Battery Power]"
@@ -385,24 +402,38 @@ echo "⇾ Update emacs icon to doomemacs version: "
 read -p "⇾ Proceed to update? [y/N]?" input_data 
 input_data="${input_data:-N}"
 if [[ "$input_data" =~ ^[Yy]$ ]]; then
-    doom_icon="$HOME/.local/share/icons/doom.png"
+    doom_icon_dir="$HOME/.local/share/icons/"
+    mkdir -p $doom_icon_dir
+    doom_icon=$doom_icon_dir"doom.png"
+    # /usr/share is where dnf installs
     usr_file="/usr/share/applications/emacs.desktop"
     local_file="$HOME/.local/share/applications/emacs.desktop"
-    cat $desktop_file > $local_file
-    wget https://raw.githubusercontent.com/eccentric-j/doom-icon/master/\
-	cute-doom/doom.png -O "$doom_icon" &&
-    sudo -S --preserve-env=doom_icon,desktop_file \
-        bash -c "sed -i 's|Icon=.*|Icon=$icon|' $local_file" <<< $SECRET
-    sudo -S gtk-update-icon-cache /usr/share/icons/* <<< $SECRET
+    if [[ -e $usr_file ]]; then
+        cat $usr_file > $local_file
+    else
+        # /usr/local/share is where built emacs installs
+        usr_file="/usr/local/share/applications/emacs.desktop"
+        if [[ -e $usr_file ]]; then
+	    cat $usr_file > $local_file
+        fi
+    fi
+
+    if [[ -e $local_file ]]; then
+        wget https://raw.githubusercontent.com/eccentric-j/doom-icon/master/cute-doom/doom.png -O "$doom_icon" && sudo -S --preserve-env=doom_icon,usr_file bash -c "sed -i 's|Icon=.*|Icon=$doom_icon|' $local_file" <<< $SECRET
+        sudo -S gtk-update-icon-cache /usr/share/icons/* <<< $SECRET
+	echo -e "[${COLOR_Y}Update doomemacs icon${RESET}]...OK. 😎\n"
+    fi
 else
     echo -e "Skipping ${COLOR_R}Doom emacs icon swap${RESET}.\n"
 fi
 unset keyd_conf
 unset input_data
+unset doom_icon_dir
 unset doom_icon
-unset desktop_file
+unset usr_file
+unset local_file
 echo ""	
-echo -e "[${COLOR_Y}Wrapping up manual steps${RESET}]...OK. 😎\n"
 echo "=================================================="
 unset SECRET
-echo -e "Setup complete.\n"
+echo ""	
+echo -e "${COLOR_Y}Setup complete${RESET}. 😎\n"
