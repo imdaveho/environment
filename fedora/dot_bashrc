@@ -73,6 +73,10 @@ if [ -d "${HOME}/.asdf" ];then
   fi
 fi
 
+if [ -d "${HOME}/.cargo" ];then
+  . $HOME/.cargo/env
+fi
+
 if eza_path=$(type -p "eza") || ! [ -z "$eza_path" ];then
   alias lk="eza -ghlaHTL 2 --git"
 fi
