@@ -307,7 +307,7 @@ doom_font="JetBrains Mono"
 read -p "Enter email: " email
 cat <<EOF >> $doom_path/config.el
 ;;
-;; User Input =================================================================
+;; User Settings ===============================================================
 (setq user-full-name "Dave Ho"
       user-mail-address "$email")
 
