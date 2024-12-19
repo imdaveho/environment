@@ -314,9 +314,9 @@ cat <<EOF >> $doom_path/config.el
 (setq doom-font (font-spec :family "$doom_font" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "$doom_font" :size 13))
 
-(setq default-directory "$HOME/Develop/code")
-(add-to-list 'default-frame-alist '(height . 40)
-(add-to-list 'default-frame-alist '(width . 100)
+(setq default-directory "~/Develop/code")
+(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(width . 100))
 EOF
 echo "⇾ Update doomemacs install nerd-fonts (M-x)."
 read -p "Press enter to continue."
