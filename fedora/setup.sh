@@ -183,7 +183,7 @@ echo -e "[${COLOR_Y}crossover${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 # Setting up development environments
 echo "➡ Setting up development directories."
 read -p "Press enter to continue."
-mkdir -p $HOME/Develop/src $HOME/Develop/usr
+mkdir -p $HOME/Develop/code $HOME/Develop/usr
 languages=(
     "golang"
     "python"
@@ -197,7 +197,7 @@ languages=(
     "flutter"
 )
 for lang in "${languages[@]}"; do
-    mkdir $HOME/Develop/src/$lang
+    mkdir $HOME/Develop/code/$lang
 done
 unset languages
 mkdir $HOME/Develop/usr/ext $HOME/Develop/usr/bin
@@ -300,11 +300,53 @@ echo "➡ Cloning doomemacs into \$HOME."
 read -p "Press enter to continue."
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 sudo -S dnf -y install jetbrains-mono-fonts <<< $SECRET
-# TODO: configure doom emacs
-# ~/.config/emacs/bin/doom install
+$HOME/.config/emacs/bin/doom install
+
+doom_path=$HOME/.config/doom
+doom_font="JetBrains Mono"
+read -p "Enter email: " email
+cat <<EOF >> $doom_path/config.el
+;;
+;; User Input =================================================================
+(setq user-full-name "Dave Ho"
+      user-mail-address "$email")
+
+(setq doom-font (font-spec :family "$doom_font" :size 12 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "$doom_font" :size 13))
+
+(setq default-directory "$HOME/Develop/code")
+(add-to-list 'default-frame-alist '(height . 40)
+(add-to-list 'default-frame-alist '(width . 100)
+EOF
+echo "⇾ Update doomemacs install nerd-fonts (M-x)."
+read -p "Press enter to continue."
+# :ui
+sed -i 's/;;(emoji +unicode)/(emoji +unicode)/' $doom_path/init.el
+sed -i 's/;;ligatures/ligatures/' $doom_path/init.el
+sed -i 's/;;unicode/unicode/' $doom_path/init.el
+# :editor
+sed -i 's/;;parinfer/parinfer/' $doom_path/init.el
+# :checkers
+sed -i 's/;;(spell +flyspell)/(spell +flyspell)/' $doom_path/init.el
+# :tools
+sed -i 's/;;direnv/direnv/' $doom_path/init.el
+sed -i 's/;;lsp/lsp/' $doom_path/init.el
+# TODO: figure out tree-sitter??
+# :lang
+sed -i 's/;;clojure/(clojure +lsp)/' $doom_path/init.el
+sed -i 's/;;javascript/(javascript +lsp)/' $doom_path/init.el
+sed -i 's/;;lua/(lua +lsp)/' $doom_path/init.el
+sed -i 's/;;nim/nim/' $doom_path/init.el
+sed -i 's/;;python/(python +lsp +pyenv)/' $doom_path/init.el
+sed -i 's/;;(rust +lsp)/(rust +lsp)/' $doom_path/init.el
+sed -i 's/;;scala/(scala +lsp)/' $doom_path/init.el
+sed -i 's/;;web/web/' $doom_path/init.el
+sed -i 's/;;json/json/' $doom_path/init.el
+sed -i 's/;;yaml/yaml/' $doom_path/init.el
 # TODO: installing lang+lsp dependencies.
-#       installing nerd fonts (M-x)
-# TODO: add updated config.el and init.el files
+unset doom_path
+unset doom_font
+# do not unset email; might be used for SSH keys below
 echo -e "[${COLOR_Y}doomemacs${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 
 
@@ -313,7 +355,8 @@ echo "➡ Setting up SSH keys for github."
 read -p "⇾ Proceed to setup? [y/N]? " input_data 
 input_data="${input_data:-N}"
 if [[ "$input_data" =~ ^[Yy]$ ]]; then
-    read -p "Enter email: " email
+    # read -p "Enter email: " email
+    # use the email from doom emacs section
     ssh-keygen -t ed25519 -C $email
     if [[ -n $(eval $(ssh-agent -s)) ]]; then # (to check if running)
         ssh-add ~/.ssh/id_ed25519
@@ -353,16 +396,16 @@ echo "  • Show Battery Percentage [ON]"
 echo "⇾ Settings > Appearance: "
 echo "  • Style -> [Dark]"
 echo "  • Background -> TBD"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Tweaks > Windows: "
 echo "  • Toggle Minimize, Maximize [ON]"
 echo "  • Toggle Center New Windows [ON]"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Extensions > Main: "
 echo "  • Toggle App Menu [ON]"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Update Grub (if necessary): "
 echo "  • Edit '/etc/default/grub' > GRUB_CMDLINE_LINUX:"
@@ -370,12 +413,12 @@ echo "    \`quiet splash\`"
 echo "    (if portrait screen) \`video=DSI-1:panel_orientation=right_side_up\`"
 echo "  • Regenerate grub.cfg \`grub2-mkconfig -o /boot/grub2/grub.cfg\`"
 echo "  • Update \`plymouth-set-default-theme <rhgb|bgrt|spinner> -R\`"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Install Gnome Extensions: "
 echo "  • https://extensions.gnome.org/extension/307/dash-to-dock/"
 echo "  • https://extensions.gnome.org/extension/1460/vitals/"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Install ${COLOR_Y}keyd${RESET} for mapping ESC on BT keyboard"
 echo "  • \`sudo dnf copr enable alternateved/keyd\`"
@@ -396,7 +439,7 @@ EOF
 echo "$keyd_conf"
 # sudo -S bash -c "tee -a /etc/keyd/default.conf <<< $keyd_conf >/dev/null" <<< $SECRET 
 echo "  • \`sudo systemctl enable keyd && sudo systemctl start keyd\`"
-read -p "Press [enter] to move on."
+read -p "Press enter to continue."
 echo ""	
 echo "⇾ Update emacs icon to doomemacs version: "
 read -p "⇾ Proceed to update? [y/N]?" input_data 

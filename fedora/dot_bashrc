@@ -51,13 +51,13 @@ bind '"\e[B": history-search-forward'
 bind '"\eOB": history-search-forward'
 
 function cdd() {
-  cd $HOME/Develop/build/$1
+  cd $HOME/Develop/code/$1
 }
 
 export PATH="$HOME/.config/emacs/bin:$PATH"
-export GOPATH="$HOME/Develop/build/golang/.gomodules"
-export PATH="$HOME/Develop/build/golang/.gomodules/bin:$PATH"
-#export PATH="$HOME/Develop/build/scala/.scala_modules/bin:$PATH"
+export GOPATH="$HOME/Develop/code/golang/.gomodules"
+export PATH="$HOME/Develop/code/golang/.gomodules/bin:$PATH"
+#export PATH="$HOME/Develop/code/scala/.scala_modules/bin:$PATH"
 #export PATH="$HOME/.local/share/coursier/bin:$PATH"
 # export PATH="$HOME/.cargo/bin:$PATH"
 # export PATH="$GOPATH/bin:$PATH"
