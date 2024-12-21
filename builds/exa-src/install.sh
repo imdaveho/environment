@@ -5,12 +5,12 @@ if rust_loc=$(type -p "cargo") || ! [ -z "$rust_loc" ];then
   export CARGO_HOME=$(pwd)
   export PATH=$PATH:$CARGO_HOME/bin
 
-  git clone https://github.com/ogham/exa
-  cd exa
+  git clone https://github.com/eza-community/eza
+  cd eza
   cargo build --release
-  cp ./target/release/exa $HOME/devel/usr/bin
+  cp ./target/release/eza $HOME/Develop/usr/bin
   cd $CARGO_HOME &&
-    rm -rf ./exa &&
+    rm -rf ./eza &&
     rm -rf ./registry &&
     rm -r ./.package-cache
 

@@ -54,37 +54,37 @@ function cdd() {
   cd $HOME/Develop/code/$1
 }
 
-export PATH="$HOME/.config/emacs/bin:$PATH"
-export GOPATH="$HOME/Develop/code/golang/.gomodules"
-export PATH="$HOME/Develop/code/golang/.gomodules/bin:$PATH"
-#export PATH="$HOME/Develop/code/scala/.scala_modules/bin:$PATH"
-#export PATH="$HOME/.local/share/coursier/bin:$PATH"
-# export PATH="$HOME/.cargo/bin:$PATH"
-# export PATH="$GOPATH/bin:$PATH"
-# export PATH="$HOME/Develop/usr/bin:$PATH"
-
-if [ -d "${HOME}/.asdf" ];then
+[[ -d "${HOME}/.asdf" ]] && {
   . ${HOME}/.asdf/asdf.sh
   . ${HOME}/.asdf/completions/asdf.bash
-  if java_path=$(type -p "java") || ! [ -z "$java_path" ];then
-    . ${HOME}/.asdf/plugins/java/set-java-home.bash
-  else
-    : # no-op()
-  fi
-fi
 
-if [ -d "${HOME}/.cargo" ];then
+  [[ -n $(type -p "java") ]] && \
+    . ${HOME}/.asdf/plugins/java/set-java-home.bash || : # no-op() 
+}
+
+! [[ -z $(type -p "direnv") ]] && eval "$(direnv hook bash)"
+# NOTE: previously if clauses were using if ... fi blocks
+#       e.g. if var=$(cmd) || ! [-z $var ]; then
+#       this is a shorthand version keeping the original ! [[ -z ]]
+#       approach, which is effectively [[ -n ]] (value is not empty)
+#       TODO: confirm that this doesn't mess up bashrc for some reason
+#             that the var=$(cmd) || ... was somehow necessary.
+[[ -n $(type -p "go") ]] && export GOPATH="$HOME/Develop/code/golang/.gomodules"
+[[ -n $(type -p "eza") ]] && alias lk="eza -ghlaHTL 2 --git"
+[[ -n $(type -p "starship") ]] && eval "$(starship init bash)"
+
+# Updating $PATH
+export PATH="$HOME/Develop/usr/bin:$PATH"
+[[ -d "$HOME/.config/emacs" ]] && \
+  export PATH="$HOME/.config/emacs/bin:$PATH"
+[[ -d "$HOME/.local/share/coursier" ]] && \
+  export PATH="$HOME/.local/share/coursier/bin:$PATH"
+[[ -n $GOPATH ]] && [[ -d $GOPATH ]] && \
+  export PATH="$GOPATH/bin:$PATH"
+[[ -d "${HOME}/.cargo" ]] && {
   . $HOME/.cargo/env
-fi
+  export PATH="$HOME/.cargo/bin:$PATH"
+}
 
-if eza_path=$(type -p "eza") || ! [ -z "$eza_path" ];then
-  alias lk="eza -ghlaHTL 2 --git"
-fi
+# export PATH="$HOME/Develop/code/scala/.scala_modules/bin:$PATH"
 
-if direnv_path=$(type -p "direnv") || ! [ -z "$direnv_path" ];then
-  eval "$(direnv hook bash)"
-fi
-
-if starship_path=$(type -p "starship") || ! [ -z "$starship_path" ];then
-  eval "$(starship init bash)"
-fi

@@ -333,19 +333,51 @@ sed -i 's/;;direnv/direnv/' $doom_path/init.el
 sed -i 's/;;lsp/lsp/' $doom_path/init.el
 # TODO: figure out tree-sitter??
 # :lang
+# spell +flycheck
+sudo -S dnf -y install aspell <<< $SECRET
+# markdown
+sudo -S dnf -y install discount <<< $SECRET
+sed -i 's/sh                ; /(sh +lsp)                ; /' $doom_path/init.el
+# sh/bash
+sudo -S dnf -y install nodejs-bash-language-server <<< $SECRET
+# golang
+sed -i 's/;;(go +lsp)/(go +lsp)/' $doom_path/init.el
+export GOPATH="$HOME/Develop/code/golang/.gomodules"
+go install github.com/x-motemen/gore/cmd/gore@latest
+go install github.com/stamblerre/gocode@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/fatih/gomodifytags@latest
+go install golang.org/x/tools/gopls@latest
+golangci_lint_ver="v1.62.2"
+# check https://golangci-lint.run/welcome/install/#local-installation for latest
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin $golangci_lint_ver
+# scala
+sed -i 's/;;scala/(scala +lsp)/' $doom_path/init.el
+usr_bin="$HOME/Develop/usr/bin"
+curl -fL "https://github.com/coursier/launchers/raw/master/cs-x86_64-pc-linux.gz" | gzip -d > $usr_bin/cs
+chmod +x $HOME/Develop/usr/bin/cs
+$HOME/Develop/usr/bin/cs install ammonite scalafmt metals
+mill_ver=0.12.4
+curl -L https://github.com/com-lihaoyi/mill/releases/download/$mill_ver/$mill_ver > $usr_bin/mill && chmod +x $usr_bin/mill
+# clojure
 sed -i 's/;;clojure/(clojure +lsp)/' $doom_path/init.el
 sed -i 's/;;javascript/(javascript +lsp)/' $doom_path/init.el
 sed -i 's/;;lua/(lua +lsp)/' $doom_path/init.el
 sed -i 's/;;nim/nim/' $doom_path/init.el
 sed -i 's/;;python/(python +lsp +pyenv)/' $doom_path/init.el
 sed -i 's/;;(rust +lsp)/(rust +lsp)/' $doom_path/init.el
-sed -i 's/;;scala/(scala +lsp)/' $doom_path/init.el
 sed -i 's/;;web/web/' $doom_path/init.el
 sed -i 's/;;json/json/' $doom_path/init.el
 sed -i 's/;;yaml/yaml/' $doom_path/init.el
 # TODO: installing lang+lsp dependencies.
+$HOME/.config/emacs/bin/doom sync
 unset doom_path
 unset doom_font
+unset golangci_lint_ver
+unset usr_bin
 # do not unset email; might be used for SSH keys below
 echo -e "[${COLOR_Y}doomemacs${RESET}]...${COLOR_G}OK${RESET}. 😎\n"
 
@@ -371,7 +403,7 @@ if [[ "$input_data" =~ ^[Yy]$ ]]; then
         if [[ "$input_data" =~ ^[Yy]$ ]]; then
             repo="$HOME/Develop/usr/ext/github/environment"
             git clone git@github.com:imdaveho/environment.git $repo
-	    cp $repo/fedora/dot_bashrc $HOME/.bashrc
+	    cp $repo/dotfiles/dot_bashrc $HOME/.bashrc
 	fi
     fi
 fi
